@@ -195,6 +195,14 @@ export class OhmeDevice extends Device {
   // ── Lifecycle ──────────────────────────────────────────────────────
 
   async onDeleted(): Promise<void> {
+    this.clearIntervals();
+  }
+
+  async onUninit(): Promise<void> {
+    this.clearIntervals();
+  }
+
+  private clearIntervals(): void {
     if (this.sessionInterval) {
       clearInterval(this.sessionInterval);
     }
