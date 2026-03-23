@@ -12,6 +12,7 @@ export class OhmeDevice extends Device {
   private deviceInfoInterval?: ReturnType<typeof setInterval>;
   private lastStatus: string | null = null;
   private consecutiveFailures = 0;
+  private destroyed = false;
 
   async onInit(): Promise<void> {
     const email = this.getStoreValue('email') as string;
@@ -60,7 +61,9 @@ export class OhmeDevice extends Device {
   }
 
   private scheduleSessionPoll(delayMs: number): void {
+    if (this.destroyed) return;
     this.sessionTimeout = setTimeout(async () => {
+      if (this.destroyed) return;
       try {
         await this.api.getChargeSession();
         this.updateCapabilities();
@@ -78,6 +81,7 @@ export class OhmeDevice extends Device {
         this.consecutiveFailures++;
         const backoff = Math.min(POLL_SESSION_MS * 2 ** this.consecutiveFailures, MAX_BACKOFF_MS);
         this.error(`Session poll failed (${this.consecutiveFailures} consecutive), next attempt in ${backoff / 1000}s`, err);
+        await this.setUnavailable('Connection error');
         this.scheduleSessionPoll(backoff);
       }
     }, delayMs);
@@ -215,6 +219,7 @@ export class OhmeDevice extends Device {
   }
 
   private clearIntervals(): void {
+    this.destroyed = true;
     if (this.sessionTimeout) {
       clearTimeout(this.sessionTimeout);
     }
