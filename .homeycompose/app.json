@@ -1,6 +1,6 @@
 {
   "id": "io.jak.ohme",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": ">=12.4.5",
   "sdk": 3,
   "brandColor": "#0046AE",
