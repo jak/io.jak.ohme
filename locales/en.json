@@ -1,1 +1,165 @@
-{}
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Sign in with your Ohme account",
+    "usernameLabel": "Ohme Email",
+    "usernamePlaceholder": "you@example.com",
+    "passwordLabel": "Ohme Password",
+    "passwordPlaceholder": "Your Ohme app password"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Charger Status",
+      "values": {
+        "unplugged": "Unplugged",
+        "plugged_in": "Plugged In",
+        "charging": "Charging",
+        "paused": "Paused",
+        "pending_approval": "Pending Approval",
+        "finished": "Finished"
+      }
+    },
+    "charge_mode": {
+      "title": "Charge Mode",
+      "values": {
+        "max_charge": "Max Charge",
+        "smart_charge": "Smart Charge",
+        "paused": "Paused"
+      }
+    },
+    "target_percentage": {
+      "title": "Target Percentage",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Target Time"
+    },
+    "preconditioning_duration": {
+      "title": "Preconditioning",
+      "values": {
+        "0": "Off",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Lock Buttons"
+    },
+    "price_cap_enabled": {
+      "title": "Price Cap Enabled"
+    },
+    "require_approval": {
+      "title": "Require Approval"
+    },
+    "sleep_when_inactive": {
+      "title": "Sleep When Inactive"
+    },
+    "measure_battery": {
+      "title": "Vehicle Battery"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Charger status changed",
+        "titleFormatted": "Charger status changed to [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Unplugged",
+              "plugged_in": "Plugged In",
+              "charging": "Charging",
+              "paused": "Paused",
+              "pending_approval": "Pending Approval",
+              "finished": "Finished"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Status",
+            "example": "charging"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Charger status is...",
+        "titleFormatted": "Charger status is [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Unplugged",
+              "plugged_in": "Plugged In",
+              "charging": "Charging",
+              "paused": "Paused",
+              "pending_approval": "Pending Approval",
+              "finished": "Finished"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Approve charge"
+      },
+      "select_vehicle": {
+        "title": "Select vehicle",
+        "titleFormatted": "Select vehicle [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Vehicle"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Set price cap value",
+        "titleFormatted": "Set price cap to [[price]]",
+        "args": {
+          "price": {
+            "title": "Price (pence/cents)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Set target time",
+        "titleFormatted": "Set target time to [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Hour"
+          },
+          "minute": {
+            "title": "Minute"
+          }
+        }
+      }
+    }
+  }
+}
