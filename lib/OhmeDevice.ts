@@ -9,6 +9,7 @@ export class OhmeDevice extends Device {
   private api!: OhmeApi;
   private sessionInterval?: ReturnType<typeof setInterval>;
   private deviceInfoInterval?: ReturnType<typeof setInterval>;
+  private lastStatus: string | null = null;
 
   async onInit(): Promise<void> {
     const email = this.getStoreValue('email') as string;
@@ -73,7 +74,14 @@ export class OhmeDevice extends Device {
   // ── Capability Updates ─────────────────────────────────────────────
 
   private updateCapabilities(): void {
-    this.safeSetCapability('charger_status', this.api.status);
+    const newStatus = this.api.status;
+    if (this.lastStatus !== null && this.lastStatus !== newStatus) {
+      this.homey.flow.getTriggerCard('charger_status_changed')
+        .trigger({ status: newStatus }, { status: newStatus })
+        .catch((err: Error) => this.error('Failed to trigger charger_status_changed', err));
+    }
+    this.lastStatus = newStatus;
+    this.safeSetCapability('charger_status', newStatus);
     this.safeSetCapability('measure_power', this.api.power);
     this.safeSetCapability('measure_current', this.api.current);
 
@@ -85,13 +93,12 @@ export class OhmeDevice extends Device {
     this.safeSetCapability('meter_power', this.api.energy / 1000);
     this.safeSetCapability('evcharger_charging', this.api.status === ChargerStatus.CHARGING);
 
-    if (this.api.mode !== null) {
-      this.safeSetCapability('charge_mode', this.api.mode);
-    }
+    // When unplugged/disconnected, mode is null — show 'paused' rather than empty
+    this.safeSetCapability('charge_mode', this.api.mode ?? ChargerMode.PAUSED);
 
     this.safeSetCapability('target_percentage', this.api.targetSoc);
     this.safeSetCapability('target_time', this.api.targetTimeFormatted);
-    this.safeSetCapability('preconditioning_duration', this.api.preconditioning);
+    this.safeSetCapability('preconditioning_duration', String(this.api.preconditioning));
   }
 
   private updateConfigCapabilities(): void {
@@ -118,10 +125,18 @@ export class OhmeDevice extends Device {
 
   private registerCapabilityListeners(): void {
     this.registerCapabilityListener('charge_mode', async (value: ChargerMode) => {
+      if (this.api.status === ChargerStatus.UNPLUGGED) {
+        throw new Error('Cannot change charge mode while unplugged');
+      }
+      this.log(`Setting charge mode to ${value}`);
       await this.api.setMode(value);
     });
 
     this.registerCapabilityListener('evcharger_charging', async (value: boolean) => {
+      if (value && this.api.status === ChargerStatus.UNPLUGGED) {
+        throw new Error('Cannot start charging while unplugged');
+      }
+      this.log(`Setting charging to ${value}`);
       if (value) {
         await this.api.resumeCharge();
       } else {
@@ -130,29 +145,42 @@ export class OhmeDevice extends Device {
     });
 
     this.registerCapabilityListener('target_percentage', async (value: number) => {
-      await this.api.setTarget({ targetPercent: value });
+      this.log(`Setting target percentage to ${value}%`);
+      const result = await this.api.setTarget({ targetPercent: value });
+      if (!result) {
+        throw new Error('No active charge session or rule found');
+      }
     });
 
-    this.registerCapabilityListener('preconditioning_duration', async (value: number) => {
-      await this.api.setTarget({ preconditionLength: value });
+    this.registerCapabilityListener('preconditioning_duration', async (value: string) => {
+      const minutes = parseInt(value, 10);
+      this.log(`Setting preconditioning to ${minutes} min`);
+      const result = await this.api.setTarget({ preconditionLength: minutes });
+      if (!result) {
+        throw new Error('No active charge session or rule found');
+      }
     });
 
     this.registerCapabilityListener('price_cap_enabled', async (value: boolean) => {
+      this.log(`Setting price cap to ${value}`);
       await this.api.setPriceCap(value);
     });
 
     this.registerCapabilityListener('lock_buttons', async (value: boolean) => {
+      this.log(`Setting lock buttons to ${value}`);
       await this.api.setConfigurationValue({ buttonsLocked: value });
     });
 
     if (this.hasCapability('require_approval')) {
       this.registerCapabilityListener('require_approval', async (value: boolean) => {
+        this.log(`Setting require approval to ${value}`);
         await this.api.setConfigurationValue({ pluginsRequireApproval: value });
       });
     }
 
     if (this.hasCapability('sleep_when_inactive')) {
       this.registerCapabilityListener('sleep_when_inactive', async (value: boolean) => {
+        this.log(`Setting sleep when inactive to ${value}`);
         await this.api.setConfigurationValue({ stealthEnabled: value });
       });
     }

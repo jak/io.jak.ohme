@@ -29,6 +29,152 @@
     "email": "jak.spalding@gmail.com"
   },
   "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "Charger status changed"
+        },
+        "titleFormatted": {
+          "en": "Charger status changed to [[status]]"
+        },
+        "platforms": [
+          "local",
+          "cloud"
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          },
+          {
+            "type": "dropdown",
+            "name": "status",
+            "title": {
+              "en": "Status"
+            },
+            "values": [
+              {
+                "id": "unplugged",
+                "label": {
+                  "en": "Unplugged"
+                }
+              },
+              {
+                "id": "plugged_in",
+                "label": {
+                  "en": "Plugged In"
+                }
+              },
+              {
+                "id": "charging",
+                "label": {
+                  "en": "Charging"
+                }
+              },
+              {
+                "id": "paused",
+                "label": {
+                  "en": "Paused"
+                }
+              },
+              {
+                "id": "pending_approval",
+                "label": {
+                  "en": "Pending Approval"
+                }
+              },
+              {
+                "id": "finished",
+                "label": {
+                  "en": "Finished"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status"
+            },
+            "example": {
+              "en": "charging"
+            }
+          }
+        ],
+        "id": "charger_status_changed"
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Charger status is..."
+        },
+        "titleFormatted": {
+          "en": "Charger status is [[status]]"
+        },
+        "platforms": [
+          "local",
+          "cloud"
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          },
+          {
+            "type": "dropdown",
+            "name": "status",
+            "title": {
+              "en": "Status"
+            },
+            "values": [
+              {
+                "id": "unplugged",
+                "label": {
+                  "en": "Unplugged"
+                }
+              },
+              {
+                "id": "plugged_in",
+                "label": {
+                  "en": "Plugged In"
+                }
+              },
+              {
+                "id": "charging",
+                "label": {
+                  "en": "Charging"
+                }
+              },
+              {
+                "id": "paused",
+                "label": {
+                  "en": "Paused"
+                }
+              },
+              {
+                "id": "pending_approval",
+                "label": {
+                  "en": "Pending Approval"
+                }
+              },
+              {
+                "id": "finished",
+                "label": {
+                  "en": "Finished"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "charger_status_is"
+      }
+    ],
     "actions": [
       {
         "title": {
@@ -207,6 +353,13 @@
           "OTHER"
         ]
       },
+      "capabilitiesOptions": {
+        "measure_battery": {
+          "title": {
+            "en": "Vehicle Battery"
+          }
+        }
+      },
       "id": "ohme-epod"
     },
     {
@@ -268,6 +421,13 @@
           "OTHER"
         ]
       },
+      "capabilitiesOptions": {
+        "measure_battery": {
+          "title": {
+            "en": "Vehicle Battery"
+          }
+        }
+      },
       "id": "ohme-go"
     },
     {
@@ -328,6 +488,13 @@
         "batteries": [
           "OTHER"
         ]
+      },
+      "capabilitiesOptions": {
+        "measure_battery": {
+          "title": {
+            "en": "Vehicle Battery"
+          }
+        }
       },
       "id": "ohme-home"
     },
@@ -391,6 +558,13 @@
         "batteries": [
           "OTHER"
         ]
+      },
+      "capabilitiesOptions": {
+        "measure_battery": {
+          "title": {
+            "en": "Vehicle Battery"
+          }
+        }
       },
       "id": "ohme-home-pro"
     }
@@ -482,19 +656,93 @@
       "uiComponent": "toggle"
     },
     "preconditioning_duration": {
-      "type": "number",
+      "type": "enum",
       "title": {
-        "en": "Preconditioning Duration"
+        "en": "Preconditioning"
       },
       "getable": true,
       "setable": true,
-      "uiComponent": "slider",
-      "units": {
-        "en": "min"
-      },
-      "min": 0,
-      "max": 60,
-      "step": 5
+      "uiComponent": "picker",
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Off"
+          }
+        },
+        {
+          "id": "5",
+          "title": {
+            "en": "5 min"
+          }
+        },
+        {
+          "id": "10",
+          "title": {
+            "en": "10 min"
+          }
+        },
+        {
+          "id": "15",
+          "title": {
+            "en": "15 min"
+          }
+        },
+        {
+          "id": "20",
+          "title": {
+            "en": "20 min"
+          }
+        },
+        {
+          "id": "25",
+          "title": {
+            "en": "25 min"
+          }
+        },
+        {
+          "id": "30",
+          "title": {
+            "en": "30 min"
+          }
+        },
+        {
+          "id": "35",
+          "title": {
+            "en": "35 min"
+          }
+        },
+        {
+          "id": "40",
+          "title": {
+            "en": "40 min"
+          }
+        },
+        {
+          "id": "45",
+          "title": {
+            "en": "45 min"
+          }
+        },
+        {
+          "id": "50",
+          "title": {
+            "en": "50 min"
+          }
+        },
+        {
+          "id": "55",
+          "title": {
+            "en": "55 min"
+          }
+        },
+        {
+          "id": "60",
+          "title": {
+            "en": "60 min"
+          }
+        }
+      ]
     },
     "price_cap_enabled": {
       "type": "boolean",

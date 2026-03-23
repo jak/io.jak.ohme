@@ -56,5 +56,12 @@
     "batteries": [
       "OTHER"
     ]
+  },
+  "capabilitiesOptions": {
+    "measure_battery": {
+      "title": {
+        "en": "Vehicle Battery"
+      }
+    }
   }
 }

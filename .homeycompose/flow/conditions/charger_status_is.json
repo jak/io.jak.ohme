@@ -1,0 +1,25 @@
+{
+  "title": { "en": "Charger status is..." },
+  "titleFormatted": { "en": "Charger status is [[status]]" },
+  "platforms": ["local", "cloud"],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+    },
+    {
+      "type": "dropdown",
+      "name": "status",
+      "title": { "en": "Status" },
+      "values": [
+        { "id": "unplugged", "label": { "en": "Unplugged" } },
+        { "id": "plugged_in", "label": { "en": "Plugged In" } },
+        { "id": "charging", "label": { "en": "Charging" } },
+        { "id": "paused", "label": { "en": "Paused" } },
+        { "id": "pending_approval", "label": { "en": "Pending Approval" } },
+        { "id": "finished", "label": { "en": "Finished" } }
+      ]
+    }
+  ]
+}

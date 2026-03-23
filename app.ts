@@ -7,6 +7,18 @@ module.exports = class OhmeApp extends Homey.App {
   async onInit(): Promise<void> {
     this.log('Ohme app initialized');
 
+    // Charger status trigger — fires when status changes, with optional filter
+    const statusTrigger = this.homey.flow.getTriggerCard('charger_status_changed');
+    statusTrigger.registerRunListener(async (args: { status: string }, state: { status: string }) => {
+      return args.status === state.status;
+    });
+
+    // Charger status condition — check current status
+    const statusCondition = this.homey.flow.getConditionCard('charger_status_is');
+    statusCondition.registerRunListener(async (args: { device: OhmeDevice; status: string }) => {
+      return args.device.getApi().status === args.status;
+    });
+
     // Set target time
     const setTargetTimeAction = this.homey.flow.getActionCard('set_target_time');
     setTargetTimeAction.registerRunListener(async (args: { device: OhmeDevice; hour: number; minute: number }) => {

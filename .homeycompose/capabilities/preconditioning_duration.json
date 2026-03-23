@@ -1,11 +1,22 @@
 {
-  "type": "number",
-  "title": { "en": "Preconditioning Duration" },
+  "type": "enum",
+  "title": { "en": "Preconditioning" },
   "getable": true,
   "setable": true,
-  "uiComponent": "slider",
-  "units": { "en": "min" },
-  "min": 0,
-  "max": 60,
-  "step": 5
+  "uiComponent": "picker",
+  "values": [
+    { "id": "0", "title": { "en": "Off" } },
+    { "id": "5", "title": { "en": "5 min" } },
+    { "id": "10", "title": { "en": "10 min" } },
+    { "id": "15", "title": { "en": "15 min" } },
+    { "id": "20", "title": { "en": "20 min" } },
+    { "id": "25", "title": { "en": "25 min" } },
+    { "id": "30", "title": { "en": "30 min" } },
+    { "id": "35", "title": { "en": "35 min" } },
+    { "id": "40", "title": { "en": "40 min" } },
+    { "id": "45", "title": { "en": "45 min" } },
+    { "id": "50", "title": { "en": "50 min" } },
+    { "id": "55", "title": { "en": "55 min" } },
+    { "id": "60", "title": { "en": "60 min" } }
+  ]
 }
