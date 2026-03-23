@@ -9,6 +9,11 @@ export class OhmeDriver extends Homey.Driver {
     let api: OhmeApi;
     let email: string;
     let password: string;
+    let matchedDevices: Array<{
+      name: string;
+      data: { serial: string };
+      store: { email: string; password: string; refreshToken: string | null };
+    }> = [];
 
     session.setHandler('login', async (data: { username: string; password: string }) => {
       email = data.username;
@@ -16,26 +21,26 @@ export class OhmeDriver extends Homey.Driver {
       api = new OhmeApi(email, password);
       await api.login();
       await api.updateDeviceInfo();
-      this.log('Login successful, found', api.chargeDevices.length, 'charge device(s)');
+
+      const all = api.chargeDevices;
+      const matched = all.filter((device) => this.matchesModel(device.modelTypeDisplayName));
+      this.log('Login:', all.map((d) => d.modelTypeDisplayName), '→ matched', matched.length, 'for', this.modelPatterns);
+
+      matchedDevices = matched.map((device) => ({
+        name: device.modelTypeDisplayName,
+        data: { serial: device.id },
+        store: { email, password, refreshToken: api.refreshTokenValue },
+      }));
+
+      if (matchedDevices.length === 0) {
+        throw new Error(`No ${this.modelPatterns.join('/')} chargers found on this account`);
+      }
+
       return true;
     });
 
     session.setHandler('list_devices', async () => {
-      const all = api.chargeDevices;
-      const matched = all.filter((device) => this.matchesModel(device.modelTypeDisplayName));
-      this.log('Filtering devices:', all.map((d) => d.modelTypeDisplayName), '→ matched', matched.length, 'for patterns', this.modelPatterns);
-      return matched
-        .map((device) => ({
-          name: device.modelTypeDisplayName,
-          data: {
-            serial: device.id,
-          },
-          store: {
-            email,
-            password,
-            refreshToken: api.refreshTokenValue,
-          },
-        }));
+      return matchedDevices;
     });
   }
 
