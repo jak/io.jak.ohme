@@ -7,7 +7,7 @@
 
 Control your Ohme EV charger directly from [Homey](https://homey.app). Monitor charging status, power usage, and battery level in real time. Switch between smart charging, max power, and paused modes without opening the Ohme app.
 
-This is an unofficial community app and is not affiliated with, endorsed by, or related to Ohme Ltd.
+This is an unofficial community app and is not affiliated with, endorsed by, or related to Ohme Technologies Limited.
 
 ## Supported Chargers
 
