@@ -1,0 +1,29 @@
+{
+  "id": "io.jak.ohme",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "name": {
+    "en": "Ohme"
+  },
+  "description": {
+    "en": "Adds support for Ohme ePod, Ohme Home Pro, Ohme Home (legacy) and Ohme Go (legacy) EV chargers."
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Jak Spalding",
+    "email": "jak.spalding@gmail.com"
+  }
+}
