@@ -188,7 +188,7 @@ All drivers share:
 {
   "name": { "en": "Ohme Home Pro" },
   "class": "evcharger",
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "connectivity": ["cloud"],
   "capabilities": [
     "measure_power", "measure_voltage", "measure_current", "measure_battery",
@@ -226,7 +226,7 @@ Universal + `lock_buttons` + `price_cap_enabled` only:
 {
   "name": { "en": "Ohme Home" },
   "class": "evcharger",
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "connectivity": ["cloud"],
   "capabilities": [
     "measure_power", "measure_voltage", "measure_current", "measure_battery",
@@ -1224,7 +1224,7 @@ Define the 4 custom Flow action cards that don't come free from capabilities.
 {
   "title": { "en": "Set target time" },
   "titleFormatted": { "en": "Set target time to [[hour]]:[[minute]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "number",
@@ -1251,7 +1251,7 @@ Define the 4 custom Flow action cards that don't come free from capabilities.
 ```json
 {
   "title": { "en": "Approve charge" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": []
 }
 ```
@@ -1262,7 +1262,7 @@ Define the 4 custom Flow action cards that don't come free from capabilities.
 {
   "title": { "en": "Set price cap value" },
   "titleFormatted": { "en": "Set price cap to [[price]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "number",
@@ -1281,7 +1281,7 @@ Define the 4 custom Flow action cards that don't come free from capabilities.
 {
   "title": { "en": "Select vehicle" },
   "titleFormatted": { "en": "Select vehicle [[vehicle]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "autocomplete",
