@@ -4,12 +4,14 @@ import { ChargerMode, ChargerStatus } from './types';
 
 const POLL_SESSION_MS = 30 * 1000;
 const POLL_DEVICE_INFO_MS = 5 * 60 * 1000;
+const MAX_BACKOFF_MS = 5 * 60 * 1000;
 
 export class OhmeDevice extends Device {
   private api!: OhmeApi;
-  private sessionInterval?: ReturnType<typeof setInterval>;
+  private sessionTimeout?: ReturnType<typeof setTimeout>;
   private deviceInfoInterval?: ReturnType<typeof setInterval>;
   private lastStatus: string | null = null;
+  private consecutiveFailures = 0;
 
   async onInit(): Promise<void> {
     const email = this.getStoreValue('email') as string;
@@ -44,21 +46,7 @@ export class OhmeDevice extends Device {
   // ── Polling ──────────────────────────────────────────────────────────
 
   private startPolling(): void {
-    this.sessionInterval = setInterval(async () => {
-      try {
-        await this.api.getChargeSession();
-        this.updateCapabilities();
-        await this.storeRefreshToken();
-
-        if (this.api.available) {
-          await this.setAvailable();
-        } else {
-          await this.setUnavailable('Charger offline');
-        }
-      } catch (err) {
-        this.error('Session poll failed', err);
-      }
-    }, POLL_SESSION_MS);
+    this.scheduleSessionPoll(POLL_SESSION_MS);
 
     this.deviceInfoInterval = setInterval(async () => {
       try {
@@ -69,6 +57,30 @@ export class OhmeDevice extends Device {
         this.error('Device info poll failed', err);
       }
     }, POLL_DEVICE_INFO_MS);
+  }
+
+  private scheduleSessionPoll(delayMs: number): void {
+    this.sessionTimeout = setTimeout(async () => {
+      try {
+        await this.api.getChargeSession();
+        this.updateCapabilities();
+        await this.storeRefreshToken();
+
+        if (this.api.available) {
+          await this.setAvailable();
+        } else {
+          await this.setUnavailable('Charger offline');
+        }
+
+        this.consecutiveFailures = 0;
+        this.scheduleSessionPoll(POLL_SESSION_MS);
+      } catch (err) {
+        this.consecutiveFailures++;
+        const backoff = Math.min(POLL_SESSION_MS * 2 ** this.consecutiveFailures, MAX_BACKOFF_MS);
+        this.error(`Session poll failed (${this.consecutiveFailures} consecutive), next attempt in ${backoff / 1000}s`, err);
+        this.scheduleSessionPoll(backoff);
+      }
+    }, delayMs);
   }
 
   // ── Capability Updates ─────────────────────────────────────────────
@@ -203,8 +215,8 @@ export class OhmeDevice extends Device {
   }
 
   private clearIntervals(): void {
-    if (this.sessionInterval) {
-      clearInterval(this.sessionInterval);
+    if (this.sessionTimeout) {
+      clearTimeout(this.sessionTimeout);
     }
     if (this.deviceInfoInterval) {
       clearInterval(this.deviceInfoInterval);
