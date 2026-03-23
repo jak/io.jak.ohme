@@ -1,8 +1,15 @@
 {
-  "name": { "en": "Ohme Home" },
+  "name": {
+    "en": "Ohme Home"
+  },
   "class": "evcharger",
-  "platforms": ["local", "cloud"],
-  "connectivity": ["cloud"],
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
   "capabilities": [
     "measure_power",
     "measure_voltage",
@@ -24,8 +31,30 @@
     "xlarge": "/drivers/ohme-home/assets/images/xlarge.png"
   },
   "pair": [
-    { "id": "login", "template": "login_credentials", "options": { "usernameLabel": { "en": "Email" } } },
-    { "id": "list_devices", "template": "list_devices", "navigation": { "next": "add_devices" } },
-    { "id": "add_devices", "template": "add_devices" }
-  ]
+    {
+      "id": "login",
+      "template": "login_credentials",
+      "options": {
+        "usernameLabel": {
+          "en": "Email"
+        }
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "energy": {
+    "batteries": [
+      "OTHER"
+    ]
+  }
 }

@@ -86,7 +86,7 @@ export class OhmeApi extends EventEmitter {
       throw new AuthException('Incorrect credentials');
     }
 
-    const data = await resp.json();
+    const data = await resp.json() as { idToken: string; refreshToken: string };
     this._tokenBirth = Date.now();
     this._token = data.idToken;
     this._refreshToken = data.refreshToken;
@@ -116,7 +116,7 @@ export class OhmeApi extends EventEmitter {
       throw new AuthException(`Ohme auth refresh error: ${text}`);
     }
 
-    const data = await resp.json();
+    const data = await resp.json() as { id_token: string; refresh_token: string };
     this._tokenBirth = Date.now();
     this._token = data.id_token;
     this._refreshToken = data.refresh_token;
