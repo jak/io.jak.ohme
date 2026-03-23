@@ -10,6 +10,8 @@ export class OhmeDevice extends Device {
   private sessionInterval?: ReturnType<typeof setInterval>;
   private deviceInfoInterval?: ReturnType<typeof setInterval>;
   private lastStatus: string | null = null;
+  private cumulativeEnergy: number = 0; // Wh, persisted across sessions
+  private lastSessionEnergy: number = 0; // Wh, tracks previous poll's session energy
 
   async onInit(): Promise<void> {
     const email = this.getStoreValue('email') as string;
@@ -24,11 +26,15 @@ export class OhmeDevice extends Device {
       this.api.refreshTokenValue = refreshToken;
     }
 
+    // Restore cumulative energy from device store
+    this.cumulativeEnergy = (this.getStoreValue('cumulativeEnergy') as number) || 0;
+
     try {
       await this.api.login();
       await this.storeRefreshToken();
       await this.api.updateDeviceInfo();
       await this.api.getChargeSession();
+      this.updateCumulativeEnergy();
       this.updateCapabilities();
       this.updateConfigCapabilities();
       await this.setAvailable();
@@ -47,6 +53,7 @@ export class OhmeDevice extends Device {
     this.sessionInterval = setInterval(async () => {
       try {
         await this.api.getChargeSession();
+        this.updateCumulativeEnergy();
         this.updateCapabilities();
         await this.storeRefreshToken();
 
@@ -90,7 +97,7 @@ export class OhmeDevice extends Device {
     }
 
     this.safeSetCapability('measure_battery', this.api.battery);
-    this.safeSetCapability('meter_power', this.api.energy / 1000);
+    this.safeSetCapability('meter_power', this.cumulativeEnergy / 1000);
     this.safeSetCapability('evcharger_charging', this.api.status === ChargerStatus.CHARGING);
 
     // When unplugged/disconnected, mode is null — show 'paused' rather than empty
@@ -209,6 +216,24 @@ export class OhmeDevice extends Device {
     if (this.deviceInfoInterval) {
       clearInterval(this.deviceInfoInterval);
     }
+  }
+
+  // ── Cumulative Energy ────────────────────────────────────────────
+
+  private updateCumulativeEnergy(): void {
+    const sessionEnergy = this.api.energy;
+
+    if (sessionEnergy > this.lastSessionEnergy) {
+      // Session energy increased — add the delta to cumulative total
+      this.cumulativeEnergy += sessionEnergy - this.lastSessionEnergy;
+      this.setStoreValue('cumulativeEnergy', this.cumulativeEnergy).catch((err) => {
+        this.error('Failed to persist cumulative energy', err);
+      });
+    }
+
+    // When session energy resets (new session or unplug), lastSessionEnergy
+    // resets too so the next session's energy adds cleanly on top
+    this.lastSessionEnergy = sessionEnergy;
   }
 
   // ── Helpers ────────────────────────────────────────────────────────
