@@ -4,8 +4,7 @@
   },
   "class": "evcharger",
   "platforms": [
-    "local",
-    "cloud"
+    "local"
   ],
   "connectivity": [
     "cloud"

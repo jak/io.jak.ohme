@@ -1,7 +1,7 @@
 {
   "title": { "en": "Set target time" },
   "titleFormatted": { "en": "Set target time to [[hour]]:[[minute]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "device",

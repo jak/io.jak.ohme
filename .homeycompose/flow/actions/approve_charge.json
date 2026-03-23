@@ -1,6 +1,6 @@
 {
   "title": { "en": "Approve charge" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "device",

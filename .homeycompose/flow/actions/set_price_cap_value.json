@@ -1,7 +1,7 @@
 {
   "title": { "en": "Set price cap value" },
   "titleFormatted": { "en": "Set price cap to [[price]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "device",

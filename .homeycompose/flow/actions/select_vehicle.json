@@ -1,7 +1,7 @@
 {
   "title": { "en": "Select vehicle" },
   "titleFormatted": { "en": "Select vehicle [[vehicle]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "device",

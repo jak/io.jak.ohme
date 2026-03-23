@@ -5,8 +5,7 @@
   "sdk": 3,
   "brandColor": "#0046AE",
   "platforms": [
-    "local",
-    "cloud"
+    "local"
   ],
   "name": {
     "en": "Ohme"

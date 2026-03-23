@@ -1,7 +1,7 @@
 {
   "title": { "en": "Charger status is..." },
   "titleFormatted": { "en": "Charger status is [[status]]" },
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "args": [
     {
       "type": "device",

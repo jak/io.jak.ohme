@@ -2,3 +2,5 @@
 /node_modules/
 /.homeybuild/generated_imgs/
 .claude/
+app.json
+.homeybuild/
