@@ -332,7 +332,19 @@
           "template": "login_credentials",
           "options": {
             "usernameLabel": {
-              "en": "Email"
+              "en": "Ohme Email"
+            },
+            "title": {
+              "en": "Sign in with your Ohme account"
+            },
+            "usernamePlaceholder": {
+              "en": "you@example.com"
+            },
+            "passwordLabel": {
+              "en": "Ohme Password"
+            },
+            "passwordPlaceholder": {
+              "en": "Your Ohme app password"
             }
           }
         },
@@ -405,7 +417,19 @@
           "template": "login_credentials",
           "options": {
             "usernameLabel": {
-              "en": "Email"
+              "en": "Ohme Email"
+            },
+            "title": {
+              "en": "Sign in with your Ohme account"
+            },
+            "usernamePlaceholder": {
+              "en": "you@example.com"
+            },
+            "passwordLabel": {
+              "en": "Ohme Password"
+            },
+            "passwordPlaceholder": {
+              "en": "Your Ohme app password"
             }
           }
         },
@@ -478,7 +502,19 @@
           "template": "login_credentials",
           "options": {
             "usernameLabel": {
-              "en": "Email"
+              "en": "Ohme Email"
+            },
+            "title": {
+              "en": "Sign in with your Ohme account"
+            },
+            "usernamePlaceholder": {
+              "en": "you@example.com"
+            },
+            "passwordLabel": {
+              "en": "Ohme Password"
+            },
+            "passwordPlaceholder": {
+              "en": "Your Ohme app password"
             }
           }
         },
@@ -553,7 +589,19 @@
           "template": "login_credentials",
           "options": {
             "usernameLabel": {
-              "en": "Email"
+              "en": "Ohme Email"
+            },
+            "title": {
+              "en": "Sign in with your Ohme account"
+            },
+            "usernamePlaceholder": {
+              "en": "you@example.com"
+            },
+            "passwordLabel": {
+              "en": "Ohme Password"
+            },
+            "passwordPlaceholder": {
+              "en": "Your Ohme app password"
             }
           }
         },
