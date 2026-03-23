@@ -401,8 +401,8 @@ export class OhmeApi extends EventEmitter {
     return this._available;
   }
 
-  configurationValue(key: string): boolean {
-    return !!this._configuration[key];
+  configurationValue(key: string): boolean | string | undefined {
+    return this._configuration[key];
   }
 
   isCapable(capability: string): boolean {
