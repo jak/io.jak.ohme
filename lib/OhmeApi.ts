@@ -202,6 +202,10 @@ export class OhmeApi extends EventEmitter {
       if (!sessions || sessions.length === 0) {
         this._chargeSession = { mode: 'DISCONNECTED' };
         this._available = false;
+        this._battery = 0;
+        this._energy = 0;
+        this._lastRule = {};
+        this._nextSession = {};
         return;
       }
 
