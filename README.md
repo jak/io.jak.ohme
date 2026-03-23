@@ -25,7 +25,7 @@ This is an unofficial community app and is not affiliated with, endorsed by, or 
 - Preconditioning duration control
 - Flow cards for status changes, charge approval, vehicle selection, and price cap
 - Button lock, price cap, approval, and sleep mode settings
-- Requires Homey Pro (local execution only)
+- Requires Homey Pro (local execution only — Homey Cloud is not supported as only Verified Developers can publish cloud-compatible apps)
 
 ## Support
 

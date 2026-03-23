@@ -140,4 +140,4 @@ Homey UI / Flow action
 - Homey Pro (local): Yes
 - Homey Cloud: No — `platforms: ["local"]` only
 
-> **Deviation from original plan:** The initial design targeted both local and cloud platforms (`platforms: ["local", "cloud"]`). During implementation, Homey Cloud was removed (commit 047f707) because Homey Cloud imposes additional restrictions that aren't compatible with the current implementation. The app uses local platform only.
+> **Deviation from original plan:** The initial design targeted both local and cloud platforms (`platforms: ["local", "cloud"]`). Homey Cloud was removed because only Verified Developers can publish cloud-compatible apps to the Homey App Store. While the app could technically support Homey Cloud, it cannot be distributed as a cloud app without verified status.
