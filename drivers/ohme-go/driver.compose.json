@@ -55,7 +55,9 @@
   "energy": {
     "batteries": [
       "OTHER"
-    ]
+    ],
+    "evCharger": true,
+    "meterPowerImportedCapability": "meter_power"
   },
   "capabilitiesOptions": {
     "measure_battery": {
