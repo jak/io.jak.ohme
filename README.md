@@ -25,9 +25,9 @@ This is an unofficial community app and is not affiliated with, endorsed by, or 
 - Preconditioning duration control
 - Flow cards for status changes, charge approval, vehicle selection, and price cap
 - Button lock, price cap, approval, and sleep mode settings
-- Works on both Homey Pro and Homey Cloud
+- Requires Homey Pro (local execution only)
 
 ## Support
 
-- [Homey Community Topic](https://community.homey.app/t/app-pro-cloud-ohme-ev-chargers/152883)
+- [Homey Community Topic](https://community.homey.app/t/app-pro-ohme-ev-chargers/152883)
 - [Bug Reports](https://github.com/jak/io.jak.ohme/issues)
