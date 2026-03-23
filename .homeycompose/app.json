@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "compatibility": ">=12.4.5",
   "sdk": 3,
-  "brandColor": "#00B67A",
+  "brandColor": "#0046AE",
   "platforms": [
     "local",
     "cloud"
@@ -12,7 +12,7 @@
     "en": "Ohme"
   },
   "description": {
-    "en": "Adds support for Ohme ePod, Ohme Home Pro, Ohme Home (legacy) and Ohme Go (legacy) EV chargers."
+    "en": "Smart EV charging that saves you money while you sleep."
   },
   "category": [
     "energy"
@@ -26,5 +26,19 @@
   "author": {
     "name": "Jak Spalding",
     "email": "jak.spalding@gmail.com"
-  }
+  },
+  "contributing": {
+    "donate": {
+      "githubSponsors": {
+        "username": "jak"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/jak/io.jak.ohme/issues"
+  },
+  "source": "https://github.com/jak/io.jak.ohme",
+  "homepage": "https://community.homey.app/t/app-pro-cloud-ohme-ev-chargers/152883",
+  "support": "https://community.homey.app/t/app-pro-cloud-ohme-ev-chargers/152883",
+  "homeyCommunityTopicId": 152883
 }
