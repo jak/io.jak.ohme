@@ -198,6 +198,13 @@ export class OhmeApi extends EventEmitter {
 
     for (let attempt = 0; attempt < 3; attempt++) {
       const sessions = await this.request<any[]>('GET', '/v1/chargeSessions');
+
+      if (!sessions || sessions.length === 0) {
+        this._chargeSession = { mode: 'DISCONNECTED' };
+        this._available = false;
+        return;
+      }
+
       resp = sessions[0];
 
       if (resp.mode !== 'CALCULATING' && resp.mode !== 'DELIVERING') {
