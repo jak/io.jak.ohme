@@ -102,10 +102,10 @@ export class OhmeDevice extends Device {
   }
 
   private updateConfigCapabilities(): void {
-    this.safeSetCapability('lock_buttons', this.api.configurationValue('buttonsLocked') as boolean);
+    this.safeSetCapability('lock_buttons', this.api.configurationBoolean('buttonsLocked'));
     this.safeSetCapability('price_cap_enabled', this.api.capEnabled);
-    this.safeSetCapability('require_approval', this.api.configurationValue('pluginsRequireApproval') as boolean);
-    this.safeSetCapability('sleep_when_inactive', this.api.configurationValue('stealthEnabled') as boolean);
+    this.safeSetCapability('require_approval', this.api.configurationBoolean('pluginsRequireApproval'));
+    this.safeSetCapability('sleep_when_inactive', this.api.configurationBoolean('stealthEnabled'));
   }
 
   // ── Safe Capability Setter ─────────────────────────────────────────
