@@ -35,7 +35,7 @@ export class AuthException extends ApiException {
 
 export class OhmeApi extends EventEmitter {
   private email: string;
-  private password: string;
+  private password: string | null;
 
   private _token: string | null = null;
   private _refreshToken: string | null = null;
@@ -60,18 +60,36 @@ export class OhmeApi extends EventEmitter {
   private _capEnabled: boolean = false;
   private _available: boolean = false;
 
-  constructor(email: string, password: string) {
+  constructor(email: string, password?: string | null) {
     super();
-    if (!email || !password) {
-      throw new AuthException('Credentials not provided');
+    if (!email) {
+      throw new AuthException('Email not provided');
     }
     this.email = email;
-    this.password = password;
+    this.password = password ?? null;
+  }
+
+  /**
+   * Initialise the API from a stored refresh token, avoiding the need for
+   * a plaintext password.  Calls refreshSession() which will use the token
+   * exchange endpoint directly.
+   */
+  async initFromRefreshToken(refreshToken: string): Promise<boolean> {
+    this._refreshToken = refreshToken;
+    // Set a stale token birth so refreshSession() will perform the refresh
+    this._tokenBirth = 0;
+    // Put a placeholder so refreshSession() doesn't fall through to login()
+    this._token = 'pending-refresh';
+    return this.refreshSession();
   }
 
   // ── Auth ──────────────────────────────────────────────────────────────
 
   async login(): Promise<boolean> {
+    if (!this.password) {
+      throw new AuthException('Password not available – use initFromRefreshToken() or re-pair the device');
+    }
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10000);
     try {
@@ -102,6 +120,9 @@ export class OhmeApi extends EventEmitter {
 
   async refreshSession(): Promise<boolean> {
     if (this._token === null) {
+      if (!this.password) {
+        throw new AuthException('No token or password available – re-pair the device');
+      }
       return this.login();
     }
 

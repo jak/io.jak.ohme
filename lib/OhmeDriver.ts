@@ -12,7 +12,7 @@ export class OhmeDriver extends Homey.Driver {
     let matchedDevices: Array<{
       name: string;
       data: { serial: string };
-      store: { email: string; password: string; refreshToken: string | null };
+      store: { email: string; refreshToken: string | null };
     }> = [];
 
     session.setHandler('login', async (data: { username: string; password: string }) => {
@@ -29,7 +29,7 @@ export class OhmeDriver extends Homey.Driver {
       matchedDevices = matched.map((device) => ({
         name: device.modelTypeDisplayName,
         data: { serial: device.id },
-        store: { email, password, refreshToken: api.refreshTokenValue },
+        store: { email, refreshToken: api.refreshTokenValue },
       }));
 
       if (matchedDevices.length === 0) {
