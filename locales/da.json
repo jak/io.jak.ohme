@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Log ind med din Ohme-konto",
+    "usernameLabel": "Ohme e-mailadresse",
+    "usernamePlaceholder": "dig@eksempel.dk",
+    "passwordLabel": "Ohme adgangskode",
+    "passwordPlaceholder": "Din Ohme-appadgangskode"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Laderstatus",
+      "values": {
+        "unplugged": "Frakoblet",
+        "plugged_in": "Tilsluttet",
+        "charging": "Oplader",
+        "paused": "Pauset",
+        "pending_approval": "Afventer godkendelse",
+        "finished": "Afsluttet"
+      }
+    },
+    "charge_mode": {
+      "title": "Opladningstilstand",
+      "values": {
+        "max_charge": "Maks opladning",
+        "smart_charge": "Smart opladning",
+        "paused": "Pauset"
+      }
+    },
+    "target_percentage": {
+      "title": "Målprocent",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Måltidspunkt"
+    },
+    "preconditioning_duration": {
+      "title": "Forkonditionering",
+      "values": {
+        "0": "Fra",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Lås knapper"
+    },
+    "price_cap_enabled": {
+      "title": "Prisloft aktiveret"
+    },
+    "require_approval": {
+      "title": "Kræv godkendelse"
+    },
+    "sleep_when_inactive": {
+      "title": "Dvale ved inaktivitet"
+    },
+    "measure_battery": {
+      "title": "Køretøjsbatteri"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Laderstatus er ændret",
+        "titleFormatted": "Laderstatus er ændret til [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Frakoblet",
+              "plugged_in": "Tilsluttet",
+              "charging": "Oplader",
+              "paused": "Pauset",
+              "pending_approval": "Afventer godkendelse",
+              "finished": "Afsluttet"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Status",
+            "example": "oplader"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Laderstatus er...",
+        "titleFormatted": "Laderstatus er [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Frakoblet",
+              "plugged_in": "Tilsluttet",
+              "charging": "Oplader",
+              "paused": "Pauset",
+              "pending_approval": "Afventer godkendelse",
+              "finished": "Afsluttet"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Godkend opladning"
+      },
+      "select_vehicle": {
+        "title": "Vælg køretøj",
+        "titleFormatted": "Vælg køretøj [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Køretøj"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Angiv prisloft",
+        "titleFormatted": "Angiv prisloft til [[price]]",
+        "args": {
+          "price": {
+            "title": "Pris (øre)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Angiv måltidspunkt",
+        "titleFormatted": "Angiv måltidspunkt til [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Time"
+          },
+          "minute": {
+            "title": "Minut"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Logga in med ditt Ohme-konto",
+    "usernameLabel": "Ohme e-postadress",
+    "usernamePlaceholder": "du@exempel.se",
+    "passwordLabel": "Ohme lösenord",
+    "passwordPlaceholder": "Ditt Ohme-applösenord"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Laddarstatus",
+      "values": {
+        "unplugged": "Urkopplad",
+        "plugged_in": "Inkopplad",
+        "charging": "Laddar",
+        "paused": "Pausad",
+        "pending_approval": "Väntar på godkännande",
+        "finished": "Klar"
+      }
+    },
+    "charge_mode": {
+      "title": "Laddläge",
+      "values": {
+        "max_charge": "Max laddning",
+        "smart_charge": "Smart laddning",
+        "paused": "Pausad"
+      }
+    },
+    "target_percentage": {
+      "title": "Målprocent",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Måltid"
+    },
+    "preconditioning_duration": {
+      "title": "Förkonditionering",
+      "values": {
+        "0": "Av",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Lås knappar"
+    },
+    "price_cap_enabled": {
+      "title": "Pristak aktiverat"
+    },
+    "require_approval": {
+      "title": "Kräv godkännande"
+    },
+    "sleep_when_inactive": {
+      "title": "Vila vid inaktivitet"
+    },
+    "measure_battery": {
+      "title": "Fordonsbatteri"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Laddarstatus har ändrats",
+        "titleFormatted": "Laddarstatus har ändrats till [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Urkopplad",
+              "plugged_in": "Inkopplad",
+              "charging": "Laddar",
+              "paused": "Pausad",
+              "pending_approval": "Väntar på godkännande",
+              "finished": "Klar"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Status",
+            "example": "laddar"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Laddarstatus är...",
+        "titleFormatted": "Laddarstatus är [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Urkopplad",
+              "plugged_in": "Inkopplad",
+              "charging": "Laddar",
+              "paused": "Pausad",
+              "pending_approval": "Väntar på godkännande",
+              "finished": "Klar"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Godkänn laddning"
+      },
+      "select_vehicle": {
+        "title": "Välj fordon",
+        "titleFormatted": "Välj fordon [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Fordon"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Ange pristak",
+        "titleFormatted": "Ange pristak till [[price]]",
+        "args": {
+          "price": {
+            "title": "Pris (öre)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Ange måltid",
+        "titleFormatted": "Ange måltid till [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Timme"
+          },
+          "minute": {
+            "title": "Minut"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Connectez-vous avec votre compte Ohme",
+    "usernameLabel": "E-mail Ohme",
+    "usernamePlaceholder": "vous@exemple.com",
+    "passwordLabel": "Mot de passe Ohme",
+    "passwordPlaceholder": "Votre mot de passe de l'app Ohme"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "État du chargeur",
+      "values": {
+        "unplugged": "Débranché",
+        "plugged_in": "Branché",
+        "charging": "En charge",
+        "paused": "En pause",
+        "pending_approval": "En attente d'approbation",
+        "finished": "Terminé"
+      }
+    },
+    "charge_mode": {
+      "title": "Mode de charge",
+      "values": {
+        "max_charge": "Charge maximale",
+        "smart_charge": "Charge intelligente",
+        "paused": "En pause"
+      }
+    },
+    "target_percentage": {
+      "title": "Pourcentage cible",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Heure cible"
+    },
+    "preconditioning_duration": {
+      "title": "Préconditionnement",
+      "values": {
+        "0": "Désactivé",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Verrouiller les boutons"
+    },
+    "price_cap_enabled": {
+      "title": "Plafond de prix activé"
+    },
+    "require_approval": {
+      "title": "Approbation requise"
+    },
+    "sleep_when_inactive": {
+      "title": "Veille en cas d'inactivité"
+    },
+    "measure_battery": {
+      "title": "Batterie du véhicule"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "L'état du chargeur a changé",
+        "titleFormatted": "L'état du chargeur est passé à [[status]]",
+        "args": {
+          "status": {
+            "title": "État",
+            "values": {
+              "unplugged": "Débranché",
+              "plugged_in": "Branché",
+              "charging": "En charge",
+              "paused": "En pause",
+              "pending_approval": "En attente d'approbation",
+              "finished": "Terminé"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "État",
+            "example": "en charge"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "L'état du chargeur est...",
+        "titleFormatted": "L'état du chargeur est [[status]]",
+        "args": {
+          "status": {
+            "title": "État",
+            "values": {
+              "unplugged": "Débranché",
+              "plugged_in": "Branché",
+              "charging": "En charge",
+              "paused": "En pause",
+              "pending_approval": "En attente d'approbation",
+              "finished": "Terminé"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Approuver la charge"
+      },
+      "select_vehicle": {
+        "title": "Sélectionner le véhicule",
+        "titleFormatted": "Sélectionner le véhicule [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Véhicule"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Définir le plafond de prix",
+        "titleFormatted": "Définir le plafond de prix à [[price]]",
+        "args": {
+          "price": {
+            "title": "Prix (centimes)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Définir l'heure cible",
+        "titleFormatted": "Définir l'heure cible à [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Heure"
+          },
+          "minute": {
+            "title": "Minute"
+          }
+        }
+      }
+    }
+  }
+}
