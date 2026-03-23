@@ -1,0 +1,7 @@
+{
+  "type": "boolean",
+  "title": { "en": "Require Approval" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle"
+}

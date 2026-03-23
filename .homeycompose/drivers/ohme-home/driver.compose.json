@@ -1,0 +1,31 @@
+{
+  "name": { "en": "Ohme Home" },
+  "class": "evcharger",
+  "platforms": ["local", "cloud"],
+  "connectivity": ["cloud"],
+  "capabilities": [
+    "measure_power",
+    "measure_voltage",
+    "measure_current",
+    "measure_battery",
+    "meter_power",
+    "evcharger_charging",
+    "charger_status",
+    "charge_mode",
+    "target_percentage",
+    "target_time",
+    "preconditioning_duration",
+    "lock_buttons",
+    "price_cap_enabled"
+  ],
+  "images": {
+    "small": "/drivers/ohme-home/assets/images/small.png",
+    "large": "/drivers/ohme-home/assets/images/large.png",
+    "xlarge": "/drivers/ohme-home/assets/images/xlarge.png"
+  },
+  "pair": [
+    { "id": "login", "template": "login_credentials", "options": { "usernameLabel": { "en": "Email" } } },
+    { "id": "list_devices", "template": "list_devices", "navigation": { "next": "add_devices" } },
+    { "id": "add_devices", "template": "add_devices" }
+  ]
+}

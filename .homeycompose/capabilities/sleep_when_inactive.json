@@ -1,0 +1,7 @@
+{
+  "type": "boolean",
+  "title": { "en": "Sleep When Inactive" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle"
+}

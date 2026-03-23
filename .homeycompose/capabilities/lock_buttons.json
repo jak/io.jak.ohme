@@ -1,0 +1,7 @@
+{
+  "type": "boolean",
+  "title": { "en": "Lock Buttons" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle"
+}

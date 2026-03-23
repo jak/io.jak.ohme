@@ -1,0 +1,12 @@
+{
+  "type": "enum",
+  "title": { "en": "Charge Mode" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "picker",
+  "values": [
+    { "id": "max_charge", "title": { "en": "Max Charge" } },
+    { "id": "smart_charge", "title": { "en": "Smart Charge" } },
+    { "id": "paused", "title": { "en": "Paused" } }
+  ]
+}

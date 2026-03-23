@@ -1,0 +1,15 @@
+{
+  "type": "enum",
+  "title": { "en": "Charger Status" },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "picker",
+  "values": [
+    { "id": "unplugged", "title": { "en": "Unplugged" } },
+    { "id": "plugged_in", "title": { "en": "Plugged In" } },
+    { "id": "charging", "title": { "en": "Charging" } },
+    { "id": "paused", "title": { "en": "Paused" } },
+    { "id": "pending_approval", "title": { "en": "Pending Approval" } },
+    { "id": "finished", "title": { "en": "Finished" } }
+  ]
+}
