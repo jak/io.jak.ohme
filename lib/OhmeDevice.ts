@@ -33,11 +33,13 @@ export class OhmeDevice extends Device {
       this.updateConfigCapabilities();
       await this.setAvailable();
       this.registerCapabilityListeners();
-      this.startPolling();
     } catch (err) {
       this.error('Failed to initialise OhmeDevice', err);
       await this.setUnavailable((err as Error).message);
     }
+
+    // Always start polling so the device can self-heal after transient failures
+    this.startPolling();
   }
 
   // ── Polling ──────────────────────────────────────────────────────────
