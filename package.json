@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint --ext .js,.ts --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.8",
@@ -11,6 +12,7 @@
     "@types/node": "^25.5.0",
     "eslint": "^7.32.0",
     "eslint-config-athom": "^3.1.5",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.1"
   }
 }
