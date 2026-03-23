@@ -3,5 +3,9 @@
   "compilerOptions": {
     "allowJs": true,
     "outDir": ".homeybuild/"
-  }
+  },
+  "exclude": [
+    "vitest.config.ts",
+    "test/**/*"
+  ]
 }
