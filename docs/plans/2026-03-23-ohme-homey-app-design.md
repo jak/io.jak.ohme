@@ -138,5 +138,6 @@ Homey UI / Flow action
 ## Platform Support
 
 - Homey Pro (local): Yes
-- Homey Cloud: Yes — all `platforms: ["local", "cloud"]`
-- No local network access required (cloud-to-cloud only)
+- Homey Cloud: No — `platforms: ["local"]` only
+
+> **Deviation from original plan:** The initial design targeted both local and cloud platforms (`platforms: ["local", "cloud"]`). Homey Cloud was removed because only Verified Developers can publish cloud-compatible apps to the Homey App Store. While the app could technically support Homey Cloud, it cannot be distributed as a cloud app without verified status.
