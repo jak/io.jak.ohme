@@ -1,0 +1,5 @@
+{
+  "title": { "en": "Approve charge" },
+  "platforms": ["local", "cloud"],
+  "args": []
+}

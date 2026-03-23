@@ -1,0 +1,12 @@
+{
+  "title": { "en": "Select vehicle" },
+  "titleFormatted": { "en": "Select vehicle [[vehicle]]" },
+  "platforms": ["local", "cloud"],
+  "args": [
+    {
+      "type": "autocomplete",
+      "name": "vehicle",
+      "title": { "en": "Vehicle" }
+    }
+  ]
+}

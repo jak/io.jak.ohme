@@ -51,6 +51,7 @@ export class OhmeApi extends EventEmitter {
 
   private _serial: string = '';
   private _deviceInfo: DeviceInfo | null = null;
+  private _chargeDevices: ChargeDevice[] = [];
 
   private _energy: number = 0;
   private _battery: number = 0;
@@ -223,6 +224,7 @@ export class OhmeApi extends EventEmitter {
   async updateDeviceInfo(): Promise<boolean> {
     const resp = await this.request<AccountInfo>('GET', '/v1/users/me/account');
     this._cars = resp.cars || [];
+    this._chargeDevices = resp.chargeDevices || [];
 
     try {
       this._capEnabled = resp.userSettings.chargeSettings[0].enabled;
@@ -346,8 +348,16 @@ export class OhmeApi extends EventEmitter {
     return this._deviceInfo;
   }
 
+  get chargeDevices(): ChargeDevice[] {
+    return this._chargeDevices;
+  }
+
   get serial(): string {
     return this._serial;
+  }
+
+  set serial(value: string) {
+    this._serial = value;
   }
 
   get vehicles(): Vehicle[] {

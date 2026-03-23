@@ -1,0 +1,14 @@
+{
+  "title": { "en": "Set price cap value" },
+  "titleFormatted": { "en": "Set price cap to [[price]]" },
+  "platforms": ["local", "cloud"],
+  "args": [
+    {
+      "type": "number",
+      "name": "price",
+      "title": { "en": "Price (pence/cents)" },
+      "min": 0,
+      "step": 1
+    }
+  ]
+}
