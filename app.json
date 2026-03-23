@@ -38,7 +38,13 @@
           "local",
           "cloud"
         ],
-        "args": [],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          }
+        ],
         "id": "approve_charge"
       },
       {
@@ -53,6 +59,11 @@
           "cloud"
         ],
         "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          },
           {
             "type": "autocomplete",
             "name": "vehicle",
@@ -75,6 +86,11 @@
           "cloud"
         ],
         "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          },
           {
             "type": "number",
             "name": "price",
@@ -99,6 +115,11 @@
           "cloud"
         ],
         "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          },
           {
             "type": "number",
             "name": "hour",

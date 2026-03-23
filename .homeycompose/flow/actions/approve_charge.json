@@ -1,5 +1,11 @@
 {
   "title": { "en": "Approve charge" },
   "platforms": ["local", "cloud"],
-  "args": []
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+    }
+  ]
 }

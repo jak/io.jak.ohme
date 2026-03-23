@@ -36,7 +36,7 @@ export class OhmeDriver extends Homey.Driver {
     });
   }
 
-  private matchesModel(displayName: string): boolean {
+  protected matchesModel(displayName: string): boolean {
     const lower = displayName.toLowerCase();
     return this.modelPatterns.some((pattern) => lower.includes(pattern));
   }

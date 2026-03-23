@@ -4,6 +4,11 @@
   "platforms": ["local", "cloud"],
   "args": [
     {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+    },
+    {
       "type": "autocomplete",
       "name": "vehicle",
       "title": { "en": "Vehicle" }

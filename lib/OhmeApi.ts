@@ -72,25 +72,32 @@ export class OhmeApi extends EventEmitter {
   // ── Auth ──────────────────────────────────────────────────────────────
 
   async login(): Promise<boolean> {
-    const resp = await fetch(AUTH_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: this.email,
-        password: this.password,
-        returnSecureToken: true,
-      }),
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const resp = await fetch(AUTH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.password,
+          returnSecureToken: true,
+        }),
+        signal: controller.signal,
+      });
 
-    if (resp.status !== 200) {
-      throw new AuthException('Incorrect credentials');
+      if (resp.status !== 200) {
+        throw new AuthException('Incorrect credentials');
+      }
+
+      const data = await resp.json() as { idToken: string; refreshToken: string };
+      this._tokenBirth = Date.now();
+      this._token = data.idToken;
+      this._refreshToken = data.refreshToken;
+      return true;
+    } finally {
+      clearTimeout(timer);
     }
-
-    const data = await resp.json() as { idToken: string; refreshToken: string };
-    this._tokenBirth = Date.now();
-    this._token = data.idToken;
-    this._refreshToken = data.refreshToken;
-    return true;
   }
 
   async refreshSession(): Promise<boolean> {
@@ -102,25 +109,32 @@ export class OhmeApi extends EventEmitter {
       return true;
     }
 
-    const resp = await fetch(TOKEN_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        grantType: 'refresh_token',
-        refreshToken: this._refreshToken,
-      }),
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const resp = await fetch(TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          grantType: 'refresh_token',
+          refreshToken: this._refreshToken,
+        }),
+        signal: controller.signal,
+      });
 
-    if (resp.status !== 200) {
-      const text = await resp.text();
-      throw new AuthException(`Ohme auth refresh error: ${text}`);
+      if (resp.status !== 200) {
+        const text = await resp.text();
+        throw new AuthException(`Ohme auth refresh error: ${text}`);
+      }
+
+      const data = await resp.json() as { id_token: string; refresh_token: string };
+      this._tokenBirth = Date.now();
+      this._token = data.id_token;
+      this._refreshToken = data.refresh_token;
+      return true;
+    } finally {
+      clearTimeout(timer);
     }
-
-    const data = await resp.json() as { id_token: string; refresh_token: string };
-    this._tokenBirth = Date.now();
-    this._token = data.id_token;
-    this._refreshToken = data.refresh_token;
-    return true;
   }
 
   get refreshTokenValue(): string | null {
@@ -153,22 +167,28 @@ export class OhmeApi extends EventEmitter {
       options.body = JSON.stringify(body);
     }
 
-    const resp = await fetch(url, options);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const resp = await fetch(url, { ...options, signal: controller.signal });
 
-    if (resp.status !== 200) {
-      const text = await resp.text();
-      throw new ApiException(`Ohme API response error: ${url}, ${resp.status}; ${text}`);
+      if (resp.status !== 200) {
+        const text = await resp.text();
+        throw new ApiException(`Ohme API response error: ${url}, ${resp.status}; ${text}`);
+      }
+
+      if (!parseJson && method === 'POST') {
+        return (await resp.text()) as unknown as T;
+      }
+
+      if (method === 'PUT') {
+        return true as unknown as T;
+      }
+
+      return (await resp.json()) as T;
+    } finally {
+      clearTimeout(timer);
     }
-
-    if (!parseJson && method === 'POST') {
-      return (await resp.text()) as unknown as T;
-    }
-
-    if (method === 'PUT') {
-      return true as unknown as T;
-    }
-
-    return (await resp.json()) as T;
   }
 
   // ── Data Fetching ─────────────────────────────────────────────────────
@@ -232,7 +252,12 @@ export class OhmeApi extends EventEmitter {
       // ignore
     }
 
-    const device = resp.chargeDevices[0];
+    if (!resp.chargeDevices?.length) {
+      throw new ApiException('No charge devices found on account');
+    }
+
+    const device = resp.chargeDevices.find((d: ChargeDevice) => d.id === this._serial) ?? resp.chargeDevices[0];
+    if (!device) throw new ApiException('No matching charge device found');
     this._capabilities = device.modelCapabilities;
     this._configuration = device.optionalSettings;
     this._serial = device.id;
@@ -376,8 +401,8 @@ export class OhmeApi extends EventEmitter {
     return this._available;
   }
 
-  configurationValue(key: string): boolean | string | undefined {
-    return this._configuration[key];
+  configurationValue(key: string): boolean {
+    return !!this._configuration[key];
   }
 
   isCapable(capability: string): boolean {
