@@ -18,21 +18,36 @@ export class OhmeDevice extends Device {
     this.api = new OhmeApi(email);
     this.api.serial = this.getData().serial;
 
+    const password = this.getStoreValue('password') as string | null;
+
     try {
       if (refreshToken) {
-        // Normal path: authenticate using the stored refresh token
-        await this.api.initFromRefreshToken(refreshToken);
-      } else {
-        // Backward compat: existing installs may still have a stored password
-        const password = this.getStoreValue('password') as string | null;
-        if (!password) {
-          throw new Error('No refresh token or password available – please re-pair the device');
+        try {
+          // Normal path: authenticate using the stored refresh token
+          await this.api.initFromRefreshToken(refreshToken);
+        } catch (refreshErr) {
+          // Refresh token may be stale/revoked — fall back to password if available
+          if (password) {
+            this.log('Refresh token failed, falling back to stored password');
+            this.api = new OhmeApi(email, password);
+            this.api.serial = this.getData().serial;
+            await this.api.login();
+          } else {
+            throw refreshErr;
+          }
         }
+      } else if (password) {
+        // Backward compat: existing installs may still have a stored password
         this.log('Migrating from stored password to refresh token');
         this.api = new OhmeApi(email, password);
         this.api.serial = this.getData().serial;
         await this.api.login();
-        // Remove the plaintext password now that we have a refresh token
+      } else {
+        throw new Error('No refresh token or password available – please re-pair the device');
+      }
+
+      // Remove plaintext password now that we have a valid refresh token
+      if (password) {
         await this.unsetStoreValue('password');
       }
 

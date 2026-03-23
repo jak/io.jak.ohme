@@ -135,10 +135,10 @@ export class OhmeApi extends EventEmitter {
     try {
       const resp = await fetch(TOKEN_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          grantType: 'refresh_token',
-          refreshToken: this._refreshToken,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: this._refreshToken!,
         }),
         signal: controller.signal,
       });
