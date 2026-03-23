@@ -343,7 +343,7 @@ export class OhmeApi extends EventEmitter {
       return this._chargeSession.appliedRule.targetPercent;
     }
 
-    return (this._nextSession as any).targetPercent ?? 0;
+    return this._nextSession.targetPercent ?? 0;
   }
 
   get targetTime(): [number, number] {
@@ -352,7 +352,7 @@ export class OhmeApi extends EventEmitter {
     if (this.chargeInProgress && this._chargeSession.appliedRule) {
       target = this._chargeSession.appliedRule.targetTime;
     } else {
-      target = (this._nextSession as any).targetTime ?? 0;
+      target = this._nextSession.targetTime ?? 0;
     }
 
     return [Math.floor(target / 3600), Math.floor((target % 3600) / 60)];
@@ -365,12 +365,12 @@ export class OhmeApi extends EventEmitter {
 
   get preconditioning(): number {
     if (this.chargeInProgress) {
-      if ((this._lastRule as any).preconditioningEnabled) {
-        return (this._lastRule as any).preconditionLengthMins ?? 0;
+      if (this._lastRule.preconditioningEnabled) {
+        return this._lastRule.preconditionLengthMins ?? 0;
       }
     } else {
-      if ((this._nextSession as any).preconditioningEnabled) {
-        return (this._nextSession as any).preconditionLengthMins ?? 0;
+      if (this._nextSession.preconditioningEnabled) {
+        return this._nextSession.preconditionLengthMins ?? 0;
       }
     }
     return 0;
