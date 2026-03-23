@@ -231,7 +231,7 @@ export class OhmeApi extends EventEmitter {
     }
 
     // Energy accumulation
-    if (this.chargeInProgress && resp.batterySoc != null) {
+    if (this.isConnected && resp.batterySoc != null) {
       this._energy = Math.max(0, this._energy, resp.batterySoc.wh || 0);
     } else {
       this._energy = 0;
@@ -304,11 +304,15 @@ export class OhmeApi extends EventEmitter {
     return API_MODE_TO_CHARGER_MODE[mode] ?? null;
   }
 
-  get chargeInProgress(): boolean {
+  get isConnected(): boolean {
     return (
       this.status !== ChargerStatus.UNPLUGGED &&
       this.status !== ChargerStatus.PENDING_APPROVAL
     );
+  }
+
+  get isCharging(): boolean {
+    return this.status === ChargerStatus.CHARGING;
   }
 
   get power(): number {
@@ -339,7 +343,7 @@ export class OhmeApi extends EventEmitter {
       return this._chargeSession.suspendedRule.targetPercent ?? 0;
     }
 
-    if (this.chargeInProgress && this._chargeSession.appliedRule) {
+    if (this.isConnected && this._chargeSession.appliedRule) {
       return this._chargeSession.appliedRule.targetPercent;
     }
 
@@ -349,7 +353,7 @@ export class OhmeApi extends EventEmitter {
   get targetTime(): [number, number] {
     let target: number;
 
-    if (this.chargeInProgress && this._chargeSession.appliedRule) {
+    if (this.isConnected && this._chargeSession.appliedRule) {
       target = this._chargeSession.appliedRule.targetTime;
     } else {
       target = this._nextSession.targetTime ?? 0;
@@ -364,7 +368,7 @@ export class OhmeApi extends EventEmitter {
   }
 
   get preconditioning(): number {
-    if (this.chargeInProgress) {
+    if (this.isConnected) {
       if (this._lastRule.preconditioningEnabled) {
         return this._lastRule.preconditionLengthMins ?? 0;
       }
