@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Inloggen met je Ohme account",
+    "usernameLabel": "Ohme e-mailadres",
+    "usernamePlaceholder": "jij@voorbeeld.com",
+    "passwordLabel": "Ohme wachtwoord",
+    "passwordPlaceholder": "Je Ohme app-wachtwoord"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Laadstatus",
+      "values": {
+        "unplugged": "Losgekoppeld",
+        "plugged_in": "Aangesloten",
+        "charging": "Laden",
+        "paused": "Gepauzeerd",
+        "pending_approval": "Wacht op goedkeuring",
+        "finished": "Voltooid"
+      }
+    },
+    "charge_mode": {
+      "title": "Laadmodus",
+      "values": {
+        "max_charge": "Maximaal laden",
+        "smart_charge": "Slim laden",
+        "paused": "Gepauzeerd"
+      }
+    },
+    "target_percentage": {
+      "title": "Doelpercentage",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Doeltijd"
+    },
+    "preconditioning_duration": {
+      "title": "Voorconditionering",
+      "values": {
+        "0": "Uit",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Knoppen vergrendelen"
+    },
+    "price_cap_enabled": {
+      "title": "Prijslimiet ingeschakeld"
+    },
+    "require_approval": {
+      "title": "Goedkeuring vereist"
+    },
+    "sleep_when_inactive": {
+      "title": "Slaapstand bij inactiviteit"
+    },
+    "measure_battery": {
+      "title": "Voertuigaccu"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Laadstatus is gewijzigd",
+        "titleFormatted": "Laadstatus is gewijzigd naar [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Losgekoppeld",
+              "plugged_in": "Aangesloten",
+              "charging": "Laden",
+              "paused": "Gepauzeerd",
+              "pending_approval": "Wacht op goedkeuring",
+              "finished": "Voltooid"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Status",
+            "example": "laden"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Laadstatus is...",
+        "titleFormatted": "Laadstatus is [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Losgekoppeld",
+              "plugged_in": "Aangesloten",
+              "charging": "Laden",
+              "paused": "Gepauzeerd",
+              "pending_approval": "Wacht op goedkeuring",
+              "finished": "Voltooid"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Laden goedkeuren"
+      },
+      "select_vehicle": {
+        "title": "Voertuig selecteren",
+        "titleFormatted": "Selecteer voertuig [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Voertuig"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Prijslimiet instellen",
+        "titleFormatted": "Stel prijslimiet in op [[price]]",
+        "args": {
+          "price": {
+            "title": "Prijs (cent)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Doeltijd instellen",
+        "titleFormatted": "Stel doeltijd in op [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Uur"
+          },
+          "minute": {
+            "title": "Minuut"
+          }
+        }
+      }
+    }
+  }
+}

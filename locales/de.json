@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Mit deinem Ohme Konto anmelden",
+    "usernameLabel": "Ohme E-Mail-Adresse",
+    "usernamePlaceholder": "du@beispiel.de",
+    "passwordLabel": "Ohme Passwort",
+    "passwordPlaceholder": "Dein Ohme App-Passwort"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Ladestatus",
+      "values": {
+        "unplugged": "Nicht angeschlossen",
+        "plugged_in": "Angeschlossen",
+        "charging": "Lädt",
+        "paused": "Pausiert",
+        "pending_approval": "Warte auf Freigabe",
+        "finished": "Abgeschlossen"
+      }
+    },
+    "charge_mode": {
+      "title": "Lademodus",
+      "values": {
+        "max_charge": "Maximales Laden",
+        "smart_charge": "Smartes Laden",
+        "paused": "Pausiert"
+      }
+    },
+    "target_percentage": {
+      "title": "Zielladung",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Zielzeit"
+    },
+    "preconditioning_duration": {
+      "title": "Vorkonditionierung",
+      "values": {
+        "0": "Aus",
+        "5": "5 Min.",
+        "10": "10 Min.",
+        "15": "15 Min.",
+        "20": "20 Min.",
+        "25": "25 Min.",
+        "30": "30 Min.",
+        "35": "35 Min.",
+        "40": "40 Min.",
+        "45": "45 Min.",
+        "50": "50 Min.",
+        "55": "55 Min.",
+        "60": "60 Min."
+      }
+    },
+    "lock_buttons": {
+      "title": "Tasten sperren"
+    },
+    "price_cap_enabled": {
+      "title": "Preisobergrenze aktiv"
+    },
+    "require_approval": {
+      "title": "Freigabe erforderlich"
+    },
+    "sleep_when_inactive": {
+      "title": "Ruhemodus bei Inaktivität"
+    },
+    "measure_battery": {
+      "title": "Fahrzeugbatterie"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Ladestatus hat sich geändert",
+        "titleFormatted": "Ladestatus hat sich geändert zu [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Nicht angeschlossen",
+              "plugged_in": "Angeschlossen",
+              "charging": "Lädt",
+              "paused": "Pausiert",
+              "pending_approval": "Warte auf Freigabe",
+              "finished": "Abgeschlossen"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Status",
+            "example": "lädt"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Ladestatus ist...",
+        "titleFormatted": "Ladestatus ist [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Nicht angeschlossen",
+              "plugged_in": "Angeschlossen",
+              "charging": "Lädt",
+              "paused": "Pausiert",
+              "pending_approval": "Warte auf Freigabe",
+              "finished": "Abgeschlossen"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Laden freigeben"
+      },
+      "select_vehicle": {
+        "title": "Fahrzeug auswählen",
+        "titleFormatted": "Fahrzeug [[vehicle]] auswählen",
+        "args": {
+          "vehicle": {
+            "title": "Fahrzeug"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Preisobergrenze festlegen",
+        "titleFormatted": "Preisobergrenze auf [[price]] setzen",
+        "args": {
+          "price": {
+            "title": "Preis (Cent)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Zielzeit festlegen",
+        "titleFormatted": "Zielzeit auf [[hour]]:[[minute]] setzen",
+        "args": {
+          "hour": {
+            "title": "Stunde"
+          },
+          "minute": {
+            "title": "Minute"
+          }
+        }
+      }
+    }
+  }
+}

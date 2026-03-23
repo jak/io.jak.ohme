@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Accedi con il tuo account Ohme",
+    "usernameLabel": "E-mail Ohme",
+    "usernamePlaceholder": "tu@esempio.com",
+    "passwordLabel": "Password Ohme",
+    "passwordPlaceholder": "La tua password dell'app Ohme"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Stato del caricatore",
+      "values": {
+        "unplugged": "Scollegato",
+        "plugged_in": "Collegato",
+        "charging": "In carica",
+        "paused": "In pausa",
+        "pending_approval": "In attesa di approvazione",
+        "finished": "Completato"
+      }
+    },
+    "charge_mode": {
+      "title": "Modalità di ricarica",
+      "values": {
+        "max_charge": "Ricarica massima",
+        "smart_charge": "Ricarica intelligente",
+        "paused": "In pausa"
+      }
+    },
+    "target_percentage": {
+      "title": "Percentuale obiettivo",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Ora obiettivo"
+    },
+    "preconditioning_duration": {
+      "title": "Precondizionamento",
+      "values": {
+        "0": "Disattivato",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Blocca pulsanti"
+    },
+    "price_cap_enabled": {
+      "title": "Limite di prezzo attivo"
+    },
+    "require_approval": {
+      "title": "Richiedi approvazione"
+    },
+    "sleep_when_inactive": {
+      "title": "Sospendi quando inattivo"
+    },
+    "measure_battery": {
+      "title": "Batteria del veicolo"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Lo stato del caricatore è cambiato",
+        "titleFormatted": "Lo stato del caricatore è cambiato in [[status]]",
+        "args": {
+          "status": {
+            "title": "Stato",
+            "values": {
+              "unplugged": "Scollegato",
+              "plugged_in": "Collegato",
+              "charging": "In carica",
+              "paused": "In pausa",
+              "pending_approval": "In attesa di approvazione",
+              "finished": "Completato"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Stato",
+            "example": "in carica"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Lo stato del caricatore è...",
+        "titleFormatted": "Lo stato del caricatore è [[status]]",
+        "args": {
+          "status": {
+            "title": "Stato",
+            "values": {
+              "unplugged": "Scollegato",
+              "plugged_in": "Collegato",
+              "charging": "In carica",
+              "paused": "In pausa",
+              "pending_approval": "In attesa di approvazione",
+              "finished": "Completato"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Approva ricarica"
+      },
+      "select_vehicle": {
+        "title": "Seleziona veicolo",
+        "titleFormatted": "Seleziona veicolo [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Veicolo"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Imposta limite di prezzo",
+        "titleFormatted": "Imposta limite di prezzo a [[price]]",
+        "args": {
+          "price": {
+            "title": "Prezzo (centesimi)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Imposta ora obiettivo",
+        "titleFormatted": "Imposta ora obiettivo a [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Ora"
+          },
+          "minute": {
+            "title": "Minuto"
+          }
+        }
+      }
+    }
+  }
+}

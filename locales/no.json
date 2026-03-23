@@ -1,0 +1,165 @@
+{
+  "drivers": {
+    "ohme-epod": {
+      "name": "Ohme ePod"
+    },
+    "ohme-go": {
+      "name": "Ohme Go"
+    },
+    "ohme-home": {
+      "name": "Ohme Home"
+    },
+    "ohme-home-pro": {
+      "name": "Ohme Home Pro"
+    }
+  },
+  "pair": {
+    "title": "Logg inn med Ohme-kontoen din",
+    "usernameLabel": "Ohme e-postadresse",
+    "usernamePlaceholder": "du@eksempel.no",
+    "passwordLabel": "Ohme passord",
+    "passwordPlaceholder": "Ohme-apppassordet ditt"
+  },
+  "capability": {
+    "charger_status": {
+      "title": "Laderstatus",
+      "values": {
+        "unplugged": "Frakoblet",
+        "plugged_in": "Tilkoblet",
+        "charging": "Lader",
+        "paused": "Pauset",
+        "pending_approval": "Venter på godkjenning",
+        "finished": "Fullført"
+      }
+    },
+    "charge_mode": {
+      "title": "Lademodus",
+      "values": {
+        "max_charge": "Maks lading",
+        "smart_charge": "Smart lading",
+        "paused": "Pauset"
+      }
+    },
+    "target_percentage": {
+      "title": "Målprosent",
+      "units": "%"
+    },
+    "target_time": {
+      "title": "Måltid"
+    },
+    "preconditioning_duration": {
+      "title": "Forkondisjonering",
+      "values": {
+        "0": "Av",
+        "5": "5 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
+        "25": "25 min",
+        "30": "30 min",
+        "35": "35 min",
+        "40": "40 min",
+        "45": "45 min",
+        "50": "50 min",
+        "55": "55 min",
+        "60": "60 min"
+      }
+    },
+    "lock_buttons": {
+      "title": "Lås knapper"
+    },
+    "price_cap_enabled": {
+      "title": "Pristak aktivert"
+    },
+    "require_approval": {
+      "title": "Krev godkjenning"
+    },
+    "sleep_when_inactive": {
+      "title": "Hvile ved inaktivitet"
+    },
+    "measure_battery": {
+      "title": "Kjøretøybatteri"
+    }
+  },
+  "flow": {
+    "triggers": {
+      "charger_status_changed": {
+        "title": "Laderstatus er endret",
+        "titleFormatted": "Laderstatus er endret til [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Frakoblet",
+              "plugged_in": "Tilkoblet",
+              "charging": "Lader",
+              "paused": "Pauset",
+              "pending_approval": "Venter på godkjenning",
+              "finished": "Fullført"
+            }
+          }
+        },
+        "tokens": {
+          "status": {
+            "title": "Status",
+            "example": "lader"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "charger_status_is": {
+        "title": "Laderstatus er...",
+        "titleFormatted": "Laderstatus er [[status]]",
+        "args": {
+          "status": {
+            "title": "Status",
+            "values": {
+              "unplugged": "Frakoblet",
+              "plugged_in": "Tilkoblet",
+              "charging": "Lader",
+              "paused": "Pauset",
+              "pending_approval": "Venter på godkjenning",
+              "finished": "Fullført"
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "approve_charge": {
+        "title": "Godkjenn lading"
+      },
+      "select_vehicle": {
+        "title": "Velg kjøretøy",
+        "titleFormatted": "Velg kjøretøy [[vehicle]]",
+        "args": {
+          "vehicle": {
+            "title": "Kjøretøy"
+          }
+        }
+      },
+      "set_price_cap_value": {
+        "title": "Angi pristak",
+        "titleFormatted": "Angi pristak til [[price]]",
+        "args": {
+          "price": {
+            "title": "Pris (øre)"
+          }
+        }
+      },
+      "set_target_time": {
+        "title": "Angi måltid",
+        "titleFormatted": "Angi måltid til [[hour]]:[[minute]]",
+        "args": {
+          "hour": {
+            "title": "Time"
+          },
+          "minute": {
+            "title": "Minutt"
+          }
+        }
+      }
+    }
+  }
+}
