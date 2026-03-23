@@ -16,19 +16,44 @@ export class OhmeDevice extends Device {
 
   async onInit(): Promise<void> {
     const email = this.getStoreValue('email') as string;
-    const password = this.getStoreValue('password') as string;
+    const refreshToken = this.getStoreValue('refreshToken') as string | null;
 
-    this.api = new OhmeApi(email, password);
+    this.api = new OhmeApi(email);
     this.api.serial = this.getData().serial;
 
-    // Restore refresh token if available
-    const refreshToken = this.getStoreValue('refreshToken') as string | null;
-    if (refreshToken) {
-      this.api.refreshTokenValue = refreshToken;
-    }
+    const password = this.getStoreValue('password') as string | null;
 
     try {
-      await this.api.login();
+      if (refreshToken) {
+        try {
+          // Normal path: authenticate using the stored refresh token
+          await this.api.initFromRefreshToken(refreshToken);
+        } catch (refreshErr) {
+          // Refresh token may be stale/revoked — fall back to password if available
+          if (password) {
+            this.log('Refresh token failed, falling back to stored password');
+            this.api = new OhmeApi(email, password);
+            this.api.serial = this.getData().serial;
+            await this.api.login();
+          } else {
+            throw refreshErr;
+          }
+        }
+      } else if (password) {
+        // Backward compat: existing installs may still have a stored password
+        this.log('Migrating from stored password to refresh token');
+        this.api = new OhmeApi(email, password);
+        this.api.serial = this.getData().serial;
+        await this.api.login();
+      } else {
+        throw new Error('No refresh token or password available – please re-pair the device');
+      }
+
+      // Remove plaintext password now that we have a valid refresh token
+      if (password) {
+        await this.unsetStoreValue('password');
+      }
+
       await this.storeRefreshToken();
       await this.api.updateDeviceInfo();
       await this.api.getChargeSession();
