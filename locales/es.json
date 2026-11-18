@@ -139,6 +139,15 @@
           }
         }
       },
+      "set_vehicle_soc": {
+        "title": "Establecer nivel de batería del vehículo",
+        "titleFormatted": "Establecer nivel de batería del vehículo en [[percent]]%",
+        "args": {
+          "percent": {
+            "title": "Nivel de batería (%)"
+          }
+        }
+      },
       "set_price_cap_value": {
         "title": "Establecer límite de precio",
         "titleFormatted": "Establecer límite de precio a [[price]]",

@@ -139,6 +139,15 @@
           }
         }
       },
+      "set_vehicle_soc": {
+        "title": "Indstil bilens batteriniveau",
+        "titleFormatted": "Indstil bilens batteriniveau til [[percent]]%",
+        "args": {
+          "percent": {
+            "title": "Batteriniveau (%)"
+          }
+        }
+      },
       "set_price_cap_value": {
         "title": "Angiv prisloft",
         "titleFormatted": "Angiv prisloft til [[price]]",

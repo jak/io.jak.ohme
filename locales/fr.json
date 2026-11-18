@@ -139,6 +139,15 @@
           }
         }
       },
+      "set_vehicle_soc": {
+        "title": "Définir le niveau de batterie du véhicule",
+        "titleFormatted": "Définir le niveau de batterie du véhicule à [[percent]]%",
+        "args": {
+          "percent": {
+            "title": "Niveau de batterie (%)"
+          }
+        }
+      },
       "set_price_cap_value": {
         "title": "Définir le plafond de prix",
         "titleFormatted": "Définir le plafond de prix à [[price]]",

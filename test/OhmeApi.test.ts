@@ -462,3 +462,46 @@ describe('OhmeApi.targetSoc', () => {
     expect(api.targetSoc).toBe(0);
   });
 });
+
+// ── setStateOfCharge ─────────────────────────────────────────────────
+
+describe('OhmeApi.setStateOfCharge', () => {
+  let api: OhmeApi;
+  let request: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    api = createApi();
+    request = vi.fn().mockResolvedValue({});
+    (api as any).request = request;
+    (api as any)._cars = [{ id: 'car-selected' }, { id: 'car-other' }];
+  });
+
+  it('PUTs the percent to the selected (first) vehicle', async () => {
+    await expect(api.setStateOfCharge(42)).resolves.toBe(true);
+    expect(request).toHaveBeenCalledWith(
+      'PUT',
+      '/v1/car/car-selected/state-of-charge',
+      { currentChargePercent: 42 },
+    );
+  });
+
+  it('rounds non-integer values', async () => {
+    await api.setStateOfCharge(55.6);
+    expect(request).toHaveBeenCalledWith(
+      'PUT',
+      '/v1/car/car-selected/state-of-charge',
+      { currentChargePercent: 56 },
+    );
+  });
+
+  it.each([-1, 101, NaN])('rejects out-of-range value %s', async (value) => {
+    await expect(api.setStateOfCharge(value)).rejects.toThrow(/between 0 and 100/);
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it('throws when the account has no vehicle', async () => {
+    (api as any)._cars = [];
+    await expect(api.setStateOfCharge(50)).rejects.toThrow(/No vehicle/);
+    expect(request).not.toHaveBeenCalled();
+  });
+});

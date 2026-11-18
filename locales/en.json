@@ -139,6 +139,15 @@
           }
         }
       },
+      "set_vehicle_soc": {
+        "title": "Set vehicle battery level",
+        "titleFormatted": "Set vehicle battery level to [[percent]]%",
+        "args": {
+          "percent": {
+            "title": "Battery level (%)"
+          }
+        }
+      },
       "set_price_cap_value": {
         "title": "Set price cap value",
         "titleFormatted": "Set price cap to [[price]]",

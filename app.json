@@ -295,6 +295,38 @@
           }
         ],
         "id": "set_target_time"
+      },
+      {
+        "title": {
+          "en": "Set vehicle battery level"
+        },
+        "titleFormatted": {
+          "en": "Set vehicle battery level to [[percent]]%"
+        },
+        "hint": {
+          "en": "Tell Ohme the car's current charge level, for vehicles Ohme can't read automatically."
+        },
+        "platforms": [
+          "local"
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ohme-home-pro|ohme-epod|ohme-home|ohme-go"
+          },
+          {
+            "type": "number",
+            "name": "percent",
+            "title": {
+              "en": "Battery level (%)"
+            },
+            "min": 0,
+            "max": 100,
+            "step": 1
+          }
+        ],
+        "id": "set_vehicle_soc"
       }
     ]
   },
