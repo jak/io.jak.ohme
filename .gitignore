@@ -5,3 +5,5 @@
 .homeybuild/
 .DS_Store
 coverage/
+generated_imgs
+task
