@@ -8,8 +8,8 @@ const MAX_BACKOFF_MS = 5 * 60 * 1000;
 
 export class OhmeDevice extends Device {
   private api!: OhmeApi;
-  private sessionTimeout?: ReturnType<typeof setTimeout>;
-  private deviceInfoInterval?: ReturnType<typeof setInterval>;
+  private sessionTimeout?: NodeJS.Timeout;
+  private deviceInfoInterval?: NodeJS.Timeout;
   private lastStatus: string | null = null;
   private consecutiveFailures = 0;
   private destroyed = false;
@@ -75,42 +75,48 @@ export class OhmeDevice extends Device {
   private startPolling(): void {
     this.scheduleSessionPoll(POLL_SESSION_MS);
 
-    this.deviceInfoInterval = setInterval(async () => {
-      try {
-        await this.api.updateDeviceInfo();
-        this.updateConfigCapabilities();
-        await this.storeRefreshToken();
-      } catch (err) {
-        this.error('Device info poll failed', err);
-      }
+    this.deviceInfoInterval = this.homey.setInterval(() => {
+      this.pollDeviceInfo().catch((err) => this.error('Device info poll failed', err));
     }, POLL_DEVICE_INFO_MS);
+  }
+
+  private async pollDeviceInfo(): Promise<void> {
+    await this.api.updateDeviceInfo();
+    this.updateConfigCapabilities();
+    await this.storeRefreshToken();
   }
 
   private scheduleSessionPoll(delayMs: number): void {
     if (this.destroyed) return;
-    this.sessionTimeout = setTimeout(async () => {
-      if (this.destroyed) return;
-      try {
-        await this.api.getChargeSession();
-        this.updateCapabilities();
-        await this.storeRefreshToken();
-
-        if (this.api.available) {
-          await this.setAvailable();
-        } else {
-          await this.setUnavailable('Charger offline');
-        }
-
-        this.consecutiveFailures = 0;
-        this.scheduleSessionPoll(POLL_SESSION_MS);
-      } catch (err) {
-        this.consecutiveFailures++;
-        const backoff = Math.min(POLL_SESSION_MS * 2 ** this.consecutiveFailures, MAX_BACKOFF_MS);
-        this.error(`Session poll failed (${this.consecutiveFailures} consecutive), next attempt in ${backoff / 1000}s`, err);
-        await this.setUnavailable('Connection error');
-        this.scheduleSessionPoll(backoff);
-      }
+    this.sessionTimeout = this.homey.setTimeout(() => {
+      this.pollSession().catch((err) => this.error('Session poll failed unexpectedly', err));
     }, delayMs);
+  }
+
+  private async pollSession(): Promise<void> {
+    if (this.destroyed) return;
+    try {
+      await this.api.getChargeSession();
+      this.updateCapabilities();
+      await this.storeRefreshToken();
+
+      if (this.api.available) {
+        await this.setAvailable();
+      } else {
+        await this.setUnavailable('Charger offline');
+      }
+
+      this.consecutiveFailures = 0;
+      this.scheduleSessionPoll(POLL_SESSION_MS);
+    } catch (err) {
+      this.consecutiveFailures++;
+      const backoff = Math.min(POLL_SESSION_MS * 2 ** this.consecutiveFailures, MAX_BACKOFF_MS);
+      this.error(`Session poll failed (${this.consecutiveFailures} consecutive), next attempt in ${backoff / 1000}s`, err);
+      // Schedule first so a failure below can never stop polling
+      this.scheduleSessionPoll(backoff);
+      await this.setUnavailable('Connection error')
+        .catch((unavailableErr) => this.error('Failed to mark device unavailable', unavailableErr));
+    }
   }
 
   // ── Capability Updates ─────────────────────────────────────────────
@@ -152,7 +158,7 @@ export class OhmeDevice extends Device {
 
   // ── Safe Capability Setter ─────────────────────────────────────────
 
-  private safeSetCapability(id: string, value: any): void {
+  private safeSetCapability(id: string, value: unknown): void {
     if (!this.hasCapability(id)) return;
     try {
       this.setCapabilityValue(id, value).catch((err) => {
@@ -257,12 +263,8 @@ export class OhmeDevice extends Device {
 
   private clearIntervals(): void {
     this.destroyed = true;
-    if (this.sessionTimeout) {
-      clearTimeout(this.sessionTimeout);
-    }
-    if (this.deviceInfoInterval) {
-      clearInterval(this.deviceInfoInterval);
-    }
+    this.homey.clearTimeout(this.sessionTimeout);
+    this.homey.clearInterval(this.deviceInfoInterval);
   }
 
   // ── Helpers ────────────────────────────────────────────────────────

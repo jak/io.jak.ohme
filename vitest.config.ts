@@ -4,7 +4,7 @@ import path from 'path';
 export default defineConfig({
   test: {
     alias: {
-      'homey': path.resolve(__dirname, 'test/mocks/homey.ts'),
+      homey: path.resolve(__dirname, 'test/mocks/homey.ts'),
     },
   },
 });
