@@ -81,12 +81,18 @@ export interface ChargeDevice {
   optionalSettings: Record<string, boolean | string>;
 }
 
+export interface UserSettings {
+  chargeSettings: Array<{ enabled: boolean; value: number }>;
+}
+
+export interface NextSessionInfo {
+  rule?: Partial<ChargeRule>;
+}
+
 export interface AccountInfo {
   cars: Vehicle[];
   chargeDevices: ChargeDevice[];
-  userSettings: {
-    chargeSettings: Array<{ enabled: boolean; value: number }>;
-  };
+  userSettings: UserSettings;
   tariff?: { dsrTariff: boolean };
 }
 

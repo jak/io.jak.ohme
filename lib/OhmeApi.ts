@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { setTimeout as sleep } from 'timers/promises';
 import {
   ChargerStatus,
   ChargerMode,
@@ -11,27 +12,19 @@ import {
   ChargeDevice,
   AccountInfo,
   DeviceInfo,
+  NextSessionInfo,
+  UserSettings,
 } from './types';
+import { ApiException, AuthException } from './errors';
+
+export { ApiException, AuthException };
 
 const GOOGLE_API_KEY = 'AIzaSyC8ZeZngm33tpOXLpbXeKfwtyZ1WrkbdBY';
 const API_BASE = 'https://api.ohme.io';
 const AUTH_URL = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${GOOGLE_API_KEY}`;
 const TOKEN_URL = `https://securetoken.googleapis.com/v1/token?key=${GOOGLE_API_KEY}`;
 const TOKEN_MAX_AGE_MS = 2700 * 1000; // 45 minutes
-
-export class ApiException extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'ApiException';
-  }
-}
-
-export class AuthException extends ApiException {
-  constructor(message: string) {
-    super(message);
-    this.name = 'AuthException';
-  }
-}
+const REQUEST_TIMEOUT_MS = 10 * 1000;
 
 export class OhmeApi extends EventEmitter {
   private email: string;
@@ -90,32 +83,26 @@ export class OhmeApi extends EventEmitter {
       throw new AuthException('Password not available – use initFromRefreshToken() or re-pair the device');
     }
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 10000);
-    try {
-      const resp = await fetch(AUTH_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password,
-          returnSecureToken: true,
-        }),
-        signal: controller.signal,
-      });
+    const resp = await fetch(AUTH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: this.email,
+        password: this.password,
+        returnSecureToken: true,
+      }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
 
-      if (resp.status !== 200) {
-        throw new AuthException('Incorrect credentials');
-      }
-
-      const data = await resp.json() as { idToken: string; refreshToken: string };
-      this._tokenBirth = Date.now();
-      this._token = data.idToken;
-      this._refreshToken = data.refreshToken;
-      return true;
-    } finally {
-      clearTimeout(timer);
+    if (resp.status !== 200) {
+      throw new AuthException('Incorrect credentials');
     }
+
+    const data = await resp.json() as { idToken: string; refreshToken: string };
+    this._tokenBirth = Date.now();
+    this._token = data.idToken;
+    this._refreshToken = data.refreshToken;
+    return true;
   }
 
   async refreshSession(): Promise<boolean> {
@@ -130,32 +117,26 @@ export class OhmeApi extends EventEmitter {
       return true;
     }
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 10000);
-    try {
-      const resp = await fetch(TOKEN_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: this._refreshToken!,
-        }),
-        signal: controller.signal,
-      });
+    const resp = await fetch(TOKEN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: this._refreshToken!,
+      }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
 
-      if (resp.status !== 200) {
-        const text = await resp.text();
-        throw new AuthException(`Ohme auth refresh error: ${text}`);
-      }
-
-      const data = await resp.json() as { id_token: string; refresh_token: string };
-      this._tokenBirth = Date.now();
-      this._token = data.id_token;
-      this._refreshToken = data.refresh_token;
-      return true;
-    } finally {
-      clearTimeout(timer);
+    if (resp.status !== 200) {
+      const text = await resp.text();
+      throw new AuthException(`Ohme auth refresh error: ${text}`);
     }
+
+    const data = await resp.json() as { id_token: string; refresh_token: string };
+    this._tokenBirth = Date.now();
+    this._token = data.id_token;
+    this._refreshToken = data.refresh_token;
+    return true;
   }
 
   get refreshTokenValue(): string | null {
@@ -168,10 +149,10 @@ export class OhmeApi extends EventEmitter {
 
   // ── Internal request ──────────────────────────────────────────────────
 
-  private async request<T = any>(
+  private async request<T = unknown>(
     method: string,
     path: string,
-    body?: Record<string, any>,
+    body?: object,
     parseJson: boolean = true,
   ): Promise<T> {
     await this.refreshSession();
@@ -188,37 +169,31 @@ export class OhmeApi extends EventEmitter {
       options.body = JSON.stringify(body);
     }
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 10000);
-    try {
-      const resp = await fetch(url, { ...options, signal: controller.signal });
+    const resp = await fetch(url, { ...options, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
 
-      if (resp.status !== 200) {
-        const text = await resp.text();
-        throw new ApiException(`Ohme API response error: ${url}, ${resp.status}; ${text}`);
-      }
-
-      if (!parseJson && method === 'POST') {
-        return (await resp.text()) as unknown as T;
-      }
-
-      if (method === 'PUT') {
-        return true as unknown as T;
-      }
-
-      return (await resp.json()) as T;
-    } finally {
-      clearTimeout(timer);
+    if (resp.status !== 200) {
+      const text = await resp.text();
+      throw new ApiException(`Ohme API response error: ${url}, ${resp.status}; ${text}`);
     }
+
+    if (!parseJson && method === 'POST') {
+      return (await resp.text()) as unknown as T;
+    }
+
+    if (method === 'PUT') {
+      return true as unknown as T;
+    }
+
+    return (await resp.json()) as T;
   }
 
   // ── Data Fetching ─────────────────────────────────────────────────────
 
   async getChargeSession(): Promise<void> {
-    let resp: any;
+    let resp: ChargeSession | undefined;
 
     for (let attempt = 0; attempt < 3; attempt++) {
-      const sessions = await this.request<any[]>('GET', '/v1/chargeSessions');
+      const sessions = await this.request<ChargeSession[]>('GET', '/v1/chargeSessions');
 
       if (!sessions || sessions.length === 0) {
         this._chargeSession = { mode: 'DISCONNECTED' };
@@ -226,17 +201,18 @@ export class OhmeApi extends EventEmitter {
         return;
       }
 
-      resp = sessions[0];
+      [resp] = sessions;
 
       if (resp.mode !== 'CALCULATING' && resp.mode !== 'DELIVERING') {
         break;
       }
 
       if (attempt < 2) {
-        await new Promise((r) => setTimeout(r, 1000));
+        await sleep(1000);
       }
     }
 
+    if (!resp) return;
     this._chargeSession = resp;
 
     // Online status
@@ -259,13 +235,10 @@ export class OhmeApi extends EventEmitter {
     }
 
     // Battery percent
-    this._battery =
-      resp.car?.batterySoc?.percent ??
-      resp.batterySoc?.percent ??
-      0;
+    this._battery = resp.car?.batterySoc?.percent ?? resp.batterySoc?.percent ?? 0;
 
     // Next session
-    const nextResp = await this.request<any>('GET', '/v1/chargeSessions/nextSessionInfo');
+    const nextResp = await this.request<NextSessionInfo>('GET', '/v1/chargeSessions/nextSessionInfo');
     this._nextSession = nextResp.rule || {};
   }
 
@@ -307,7 +280,7 @@ export class OhmeApi extends EventEmitter {
   // ── Derived State (getters) ───────────────────────────────────────────
 
   get status(): ChargerStatus {
-    const mode = this._chargeSession.mode;
+    const { mode } = this._chargeSession;
 
     if (mode in API_MODE_TO_STATUS) {
       return API_MODE_TO_STATUS[mode];
@@ -321,15 +294,12 @@ export class OhmeApi extends EventEmitter {
   }
 
   get mode(): ChargerMode | null {
-    const mode = this._chargeSession.mode;
+    const { mode } = this._chargeSession;
     return API_MODE_TO_CHARGER_MODE[mode] ?? null;
   }
 
   get isConnected(): boolean {
-    return (
-      this.status !== ChargerStatus.UNPLUGGED &&
-      this.status !== ChargerStatus.PENDING_APPROVAL
-    );
+    return this.status !== ChargerStatus.UNPLUGGED && this.status !== ChargerStatus.PENDING_APPROVAL;
   }
 
   get isCharging(): boolean {
@@ -357,10 +327,7 @@ export class OhmeApi extends EventEmitter {
   }
 
   get targetSoc(): number {
-    if (
-      this.status === ChargerStatus.PAUSED &&
-      this._chargeSession.suspendedRule != null
-    ) {
+    if (this.status === ChargerStatus.PAUSED && this._chargeSession.suspendedRule != null) {
       return this._chargeSession.suspendedRule.targetPercent ?? 0;
     }
 
@@ -389,16 +356,8 @@ export class OhmeApi extends EventEmitter {
   }
 
   get preconditioning(): number {
-    if (this.isConnected) {
-      if (this._lastRule.preconditioningEnabled) {
-        return this._lastRule.preconditionLengthMins ?? 0;
-      }
-    } else {
-      if (this._nextSession.preconditioningEnabled) {
-        return this._nextSession.preconditionLengthMins ?? 0;
-      }
-    }
-    return 0;
+    const rule = this.isConnected ? this._lastRule : this._nextSession;
+    return rule.preconditioningEnabled ? rule.preconditionLengthMins ?? 0 : 0;
   }
 
   get deviceInfo(): DeviceInfo | null {
@@ -521,7 +480,7 @@ export class OhmeApi extends EventEmitter {
     targetTime?: [number, number];
     preconditionLength?: number;
   }): Promise<boolean> {
-    const data: Record<string, any> = {};
+    const data: Record<string, unknown> = {};
 
     if (opts.targetPercent != null) {
       data.targetPercent = opts.targetPercent;
@@ -562,14 +521,14 @@ export class OhmeApi extends EventEmitter {
   }
 
   async setPriceCap(enabled: boolean): Promise<boolean> {
-    const settings = await this.request<any>('GET', '/v1/users/me/settings');
+    const settings = await this.request<UserSettings>('GET', '/v1/users/me/settings');
     settings.chargeSettings[0].enabled = enabled;
     const result = await this.request('PUT', '/v1/users/me/settings', settings);
     return !!result;
   }
 
   async setPriceCapValue(price: number): Promise<boolean> {
-    const settings = await this.request<any>('GET', '/v1/users/me/settings');
+    const settings = await this.request<UserSettings>('GET', '/v1/users/me/settings');
     settings.chargeSettings[0].enabled = true;
     settings.chargeSettings[0].value = price;
     const result = await this.request('PUT', '/v1/users/me/settings', settings);
