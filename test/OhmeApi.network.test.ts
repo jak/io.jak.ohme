@@ -353,6 +353,24 @@ describe('OhmeApi.getChargeSession', () => {
     expect(api.energy).toBe(5000);
   });
 
+  it('treats a battery reading without energy as 0 Wh', async () => {
+    const api = await loggedInApi();
+    mockSession(chargeSession({ batterySoc: { percent: 50 } as never }));
+
+    await api.getChargeSession();
+
+    expect(api.energy).toBe(0);
+  });
+
+  it('treats preconditioning without a length as 0 minutes', async () => {
+    const api = await loggedInApi();
+    mockSession(chargeSession({ appliedRule: chargeRule({ preconditioningEnabled: true, preconditionLengthMins: undefined }) }));
+
+    await api.getChargeSession();
+
+    expect(api.preconditioning).toBe(0);
+  });
+
   it('resets energy to 0 when the car is unplugged', async () => {
     const api = await loggedInApi();
     fm.once('GET', SESSIONS, { json: [chargeSession()] });
@@ -451,6 +469,16 @@ describe('OhmeApi.updateDeviceInfo', () => {
     fm.on('GET', ACCOUNT, { json: accountInfo({ chargeDevices: [] }) });
 
     await expect(api.updateDeviceInfo()).rejects.toThrow(new ApiException('No charge devices found on account'));
+  });
+
+  it('throws ApiException when the response has no charger list', async () => {
+    const api = await loggedInApi();
+    const info: Record<string, unknown> = { ...accountInfo() };
+    delete info.chargeDevices;
+    fm.on('GET', ACCOUNT, { json: info });
+
+    await expect(api.updateDeviceInfo()).rejects.toThrow('No charge devices found on account');
+    expect(api.chargeDevices).toEqual([]);
   });
 
   it('tolerates missing user settings and cars', async () => {

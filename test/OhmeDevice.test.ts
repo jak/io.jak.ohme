@@ -1,6 +1,8 @@
 import {
   describe, it, expect, vi, beforeEach, afterEach,
 } from 'vitest';
+import fs from 'fs';
+import path from 'path';
 import { OhmeDevice } from '../lib/OhmeDevice';
 import {
   installFetchMock, FetchMock, LOGIN_ROUTE, REFRESH_ROUTE,
@@ -522,4 +524,18 @@ describe('lifecycle', () => {
     expect(fm.calls).toHaveLength(0);
     expect(device.homey.timeouts).toHaveLength(1);
   });
+});
+
+// ── Manifest consistency ─────────────────────────────────────────────
+
+describe('app.json capabilities', () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'app.json'), 'utf8'));
+
+  it.each(manifest.drivers.map((d: { id: string; capabilities: string[] }) => [d.id, d.capabilities]))(
+    '%s: every declared capability gets a value',
+    async (_id, capabilities) => {
+      const device = await initialisedDevice({ capabilities: capabilities as string[] });
+      expect(Object.keys(device.__values).sort()).toEqual([...(capabilities as string[])].sort());
+    },
+  );
 });
