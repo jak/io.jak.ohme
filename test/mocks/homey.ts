@@ -14,3 +14,5 @@ class Device {
 }
 
 export default { Driver, App, Device };
+
+export { Driver, App, Device };

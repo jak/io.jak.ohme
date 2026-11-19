@@ -89,7 +89,7 @@ export class OhmeDevice extends Device {
   private scheduleSessionPoll(delayMs: number): void {
     if (this.destroyed) return;
     this.sessionTimeout = this.homey.setTimeout(() => {
-      this.pollSession().catch((err) => this.error('Session poll scheduling failed', err));
+      this.pollSession().catch((err) => this.error('Session poll failed unexpectedly', err));
     }, delayMs);
   }
 
@@ -112,8 +112,10 @@ export class OhmeDevice extends Device {
       this.consecutiveFailures++;
       const backoff = Math.min(POLL_SESSION_MS * 2 ** this.consecutiveFailures, MAX_BACKOFF_MS);
       this.error(`Session poll failed (${this.consecutiveFailures} consecutive), next attempt in ${backoff / 1000}s`, err);
-      await this.setUnavailable('Connection error');
+      // Schedule first so a failure below can never stop polling
       this.scheduleSessionPoll(backoff);
+      await this.setUnavailable('Connection error')
+        .catch((unavailableErr) => this.error('Failed to mark device unavailable', unavailableErr));
     }
   }
 
