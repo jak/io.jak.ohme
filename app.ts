@@ -50,7 +50,7 @@ module.exports = class OhmeApp extends Homey.App {
     });
 
     selectVehicleAction.registerArgumentAutocompleteListener('vehicle', async (_query: string, args: { device: OhmeDevice }) => {
-      const vehicles = args.device.getApi().vehicles;
+      const { vehicles } = args.device.getApi();
       return vehicles.map((v) => ({
         name: v.name || `${v.model?.brand?.name ?? v.model?.make ?? ''} ${v.model?.modelName ?? ''}`.trim(),
         id: v.id,

@@ -1,3 +1,64 @@
 {
-  "extends": "athom/homey-app"
+  "extends": "athom/homey-app",
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  },
+  "settings": {
+    "node": {
+      "tryExtensions": [
+        ".ts",
+        ".js",
+        ".json"
+      ]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".ts",
+          ".js",
+          ".json"
+        ]
+      }
+    }
+  },
+  "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "js": "never"
+      }
+    ],
+    "import/no-import-module-exports": "off",
+    "import/prefer-default-export": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "test/**/*.ts",
+        "vitest.config.ts"
+      ],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ],
+        "node/no-unpublished-import": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "max-classes-per-file": "off"
+      }
+    },
+    {
+      "files": [
+        "vitest.config.ts"
+      ],
+      "rules": {
+        "import/no-unresolved": "off",
+        "node/no-missing-import": "off"
+      }
+    }
+  ]
 }

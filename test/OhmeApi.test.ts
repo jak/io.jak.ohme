@@ -1,4 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import {
+  describe, it, expect, vi, beforeEach,
+} from 'vitest';
 import { OhmeApi, AuthException } from '../lib/OhmeApi';
 import { ChargerStatus, ChargerMode } from '../lib/types';
 
@@ -23,10 +25,6 @@ function setCapabilities(api: OhmeApi, caps: Record<string, boolean | string | s
 
 function setNextSession(api: OhmeApi, rule: any): void {
   (api as any)._nextSession = rule;
-}
-
-function setLastRule(api: OhmeApi, rule: any): void {
-  (api as any)._lastRule = rule;
 }
 
 // ── Constructor ──────────────────────────────────────────────────────
@@ -207,7 +205,7 @@ describe('OhmeApi.slots', () => {
       allSessionSlots: [{ startTimeMs: start, endTimeMs: end, watts: 7200 }],
     });
 
-    const slots = api.slots;
+    const { slots } = api;
     expect(slots).toHaveLength(1);
     expect(slots[0].start).toEqual(new Date(start));
     expect(slots[0].end).toEqual(new Date(end));
@@ -227,7 +225,7 @@ describe('OhmeApi.slots', () => {
       ],
     });
 
-    const slots = api.slots;
+    const { slots } = api;
     expect(slots).toHaveLength(1);
     expect(slots[0].start).toEqual(new Date(t0));
     expect(slots[0].end).toEqual(new Date(t2));
@@ -248,7 +246,7 @@ describe('OhmeApi.slots', () => {
       ],
     });
 
-    const slots = api.slots;
+    const { slots } = api;
     expect(slots).toHaveLength(2);
     expect(slots[0].energy).toBe(7.2);
     expect(slots[1].energy).toBe(3.6);
@@ -269,7 +267,7 @@ describe('OhmeApi.slots', () => {
       ],
     });
 
-    const slots = api.slots;
+    const { slots } = api;
     expect(slots).toHaveLength(1);
     expect(slots[0].start).toEqual(new Date(t0));
     expect(slots[0].end).toEqual(new Date(t3));
