@@ -576,6 +576,26 @@ export class OhmeApi extends EventEmitter {
     return !!result;
   }
 
+  /**
+   * Manually set the current state of charge of the selected vehicle, for cars
+   * whose SoC Ohme can't read itself. The Ohme API lists the selected vehicle first.
+   */
+  async setStateOfCharge(percent: number): Promise<boolean> {
+    if (!Number.isFinite(percent) || percent < 0 || percent > 100) {
+      throw new Error(`Battery level must be between 0 and 100 (got ${percent})`);
+    }
+
+    const vehicleId = this._cars[0]?.id;
+    if (!vehicleId) {
+      throw new Error('No vehicle found on the Ohme account');
+    }
+
+    await this.request('PUT', `/v1/car/${vehicleId}/state-of-charge`, {
+      currentChargePercent: Math.round(percent),
+    });
+    return true;
+  }
+
   async selectVehicle(vehicleId: string): Promise<boolean> {
     const result = await this.request('PUT', `/v1/car/${vehicleId}/select`);
     return !!result;

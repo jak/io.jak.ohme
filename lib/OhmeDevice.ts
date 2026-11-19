@@ -234,6 +234,17 @@ export class OhmeDevice extends Device {
     return this.api;
   }
 
+  /** Manually set the selected vehicle's battery level, then refresh so measure_battery reflects it. */
+  public async setVehicleSoc(percent: number): Promise<void> {
+    this.log(`Setting vehicle battery level to ${percent}%`);
+    // Refresh account info so we target the currently selected vehicle,
+    // even if it was changed in the Ohme app or by the select_vehicle card since the last poll.
+    await this.api.updateDeviceInfo();
+    await this.api.setStateOfCharge(percent);
+    await this.api.getChargeSession();
+    this.updateCapabilities();
+  }
+
   // ── Lifecycle ──────────────────────────────────────────────────────
 
   async onDeleted(): Promise<void> {

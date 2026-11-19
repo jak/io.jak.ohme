@@ -37,6 +37,12 @@ module.exports = class OhmeApp extends Homey.App {
       await args.device.getApi().setPriceCapValue(args.price);
     });
 
+    // Set vehicle battery level (manual SoC)
+    const setVehicleSocAction = this.homey.flow.getActionCard('set_vehicle_soc');
+    setVehicleSocAction.registerRunListener(async (args: { device: OhmeDevice; percent: number }) => {
+      await args.device.setVehicleSoc(args.percent);
+    });
+
     // Select vehicle
     const selectVehicleAction = this.homey.flow.getActionCard('select_vehicle');
     selectVehicleAction.registerRunListener(async (args: { device: OhmeDevice; vehicle: { id: string } }) => {

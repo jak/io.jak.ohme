@@ -139,6 +139,15 @@
           }
         }
       },
+      "set_vehicle_soc": {
+        "title": "Fahrzeug-Akkustand festlegen",
+        "titleFormatted": "Fahrzeug-Akkustand auf [[percent]]% setzen",
+        "args": {
+          "percent": {
+            "title": "Akkustand (%)"
+          }
+        }
+      },
       "set_price_cap_value": {
         "title": "Preisobergrenze festlegen",
         "titleFormatted": "Preisobergrenze auf [[price]] setzen",

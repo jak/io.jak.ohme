@@ -139,6 +139,15 @@
           }
         }
       },
+      "set_vehicle_soc": {
+        "title": "Accuniveau voertuig instellen",
+        "titleFormatted": "Accuniveau voertuig instellen op [[percent]]%",
+        "args": {
+          "percent": {
+            "title": "Accuniveau (%)"
+          }
+        }
+      },
       "set_price_cap_value": {
         "title": "Prijslimiet instellen",
         "titleFormatted": "Stel prijslimiet in op [[price]]",
