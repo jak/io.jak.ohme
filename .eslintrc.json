@@ -48,7 +48,16 @@
         ],
         "node/no-unpublished-import": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        "max-classes-per-file": "off"
+        "max-classes-per-file": "off",
+        "node/no-unsupported-features/es-syntax": [
+          "error",
+          {
+            "ignores": [
+              "modules",
+              "dynamicImport"
+            ]
+          }
+        ]
       }
     },
     {
