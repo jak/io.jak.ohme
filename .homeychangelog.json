@@ -4,5 +4,8 @@
   },
   "1.1.0": {
     "en": "Security hardening, reliability improvements (backoff, crash guards, timer cleanup), type safety fixes, i18n for 8 European languages, CI pipeline, and unit tests."
+  },
+  "1.2.0": {
+    "en": "A new flow card lets you set your car's battery level by hand, chargers that lose their connection now recover with their controls working and keep checking in, and dependencies and security fixes are up to date."
   }
 }
