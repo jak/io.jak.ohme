@@ -8,11 +8,11 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.8",
-    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^1.8.4",
     "@types/node": "^25.5.0",
-    "eslint": "^7.32.0",
-    "eslint-config-athom": "^3.1.5",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.1"
+    "eslint": "^8.57.1",
+    "eslint-config-athom": "^4.0.2",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.1"
   }
 }
