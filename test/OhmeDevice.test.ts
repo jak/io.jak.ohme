@@ -180,6 +180,31 @@ describe('OhmeDevice.onInit', () => {
     expect(device.homey.timeouts).toHaveLength(1);
     expect(device.homey.intervals).toHaveLength(1);
   });
+
+  it('registers capability listeners once the device recovers', async () => {
+    fm.once('POST', REFRESH_ROUTE, { status: 503, text: 'unavailable' });
+    mockHealthyAccount();
+    const device = createDevice();
+    await device.onInit();
+    expect(device.__listeners).toEqual({});
+
+    await device.pollSession();
+
+    expect(device.__available).toBe(true);
+    expect(Object.keys(device.__listeners)).toContain('charge_mode');
+  });
+
+  it('registers each capability listener only once across polls', async () => {
+    mockHealthyAccount();
+    const device = createDevice();
+    const register = vi.spyOn(device, 'registerCapabilityListener');
+
+    await device.onInit();
+    await device.pollSession();
+    await device.pollSession();
+
+    expect(register).toHaveBeenCalledTimes(8);
+  });
 });
 
 // ── Capability updates ───────────────────────────────────────────────

@@ -13,6 +13,7 @@ export class OhmeDevice extends Device {
   private lastStatus: string | null = null;
   private consecutiveFailures = 0;
   private destroyed = false;
+  private listenersRegistered = false;
 
   async onInit(): Promise<void> {
     const email = this.getStoreValue('email') as string;
@@ -99,6 +100,8 @@ export class OhmeDevice extends Device {
       await this.api.getChargeSession();
       this.updateCapabilities();
       await this.storeRefreshToken();
+      // A device that failed onInit only gets its listeners once it recovers here
+      this.registerCapabilityListeners();
 
       if (this.api.available) {
         await this.setAvailable();
@@ -172,6 +175,9 @@ export class OhmeDevice extends Device {
   // ── Capability Listeners ───────────────────────────────────────────
 
   private registerCapabilityListeners(): void {
+    if (this.listenersRegistered) return;
+    this.listenersRegistered = true;
+
     this.registerCapabilityListener('charge_mode', async (value: ChargerMode) => {
       if (this.api.status === ChargerStatus.UNPLUGGED) {
         throw new Error('Cannot change charge mode while unplugged');
