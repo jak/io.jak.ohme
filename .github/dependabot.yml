@@ -18,6 +18,9 @@ updates:
       # typescript-eslint (via eslint-config-athom) is on TypeScript 6
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
+      # Must match the Homey runtime (Node 22)
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
